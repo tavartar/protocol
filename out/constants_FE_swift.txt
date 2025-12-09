@@ -1,0 +1,522 @@
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/ProtocolEvent.swift
+──────────────────────────────
+/// Auto-generated ProtocolEvent (v2.0)
+import Foundation
+
+public struct ProtocolEvent: Codable {
+    public let namespace: String
+    public let event: String
+    public let direction: String
+    public let phase: String
+    public let payload: [String: AnyCodable]
+
+    enum CodingKeys: String, CodingKey {
+        case namespace, event, direction, phase, payload
+    }
+}
+
+/// Codable wrapper supporting arbitrary JSON
+public struct AnyCodable: Codable {
+    public let value: Any
+
+    public init(_ value: Any) { self.value = value }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+
+        if let v = try? c.decode(String.self) { value = v; return }
+        if let v = try? c.decode(Double.self) { value = v; return }
+        if let v = try? c.decode(Bool.self) { value = v; return }
+        if let v = try? c.decode([String: AnyCodable].self) { value = v; return }
+        if let v = try? c.decode([AnyCodable].self) { value = v; return }
+
+        value = ""
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.singleValueContainer()
+        switch value {
+        case let v as String: try c.encode(v)
+        case let v as Double: try c.encode(v)
+        case let v as Bool: try c.encode(v)
+        case let v as [String: AnyCodable]: try c.encode(v)
+        case let v as [AnyCodable]: try c.encode(v)
+        default: try c.encodeNil()
+        }
+    }
+}
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Enums/SystemEvent.swift
+──────────────────────────────
+/// Auto-generated — Namespace: system
+public enum SystemEvent: String, Codable, CaseIterable {
+    case system_error = "system_error"
+    case system_heartbeat = "system_heartbeat"
+    case system_request_status = "system_request_status"
+    case system_response_status = "system_response_status"
+    case system_session_closed = "system_session_closed"
+    case system_state_update = "system_state_update"
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Enums/PhoneEvent.swift
+──────────────────────────────
+/// Auto-generated — Namespace: phone
+public enum PhoneEvent: String, Codable, CaseIterable {
+    case phone_disconnect = "phone_disconnect"
+    case phone_join_approved = "phone_join_approved"
+    case phone_join_rejected = "phone_join_rejected"
+    case phone_join_room = "phone_join_room"
+    case phone_leader_transferred = "phone_leader_transferred"
+    case phone_ping = "phone_ping"
+    case phone_request_leader = "phone_request_leader"
+    case phone_role_assigned = "phone_role_assigned"
+    case phone_singer_ready = "phone_singer_ready"
+    case phone_submit_choice = "phone_submit_choice"
+    case phone_submit_vote = "phone_submit_vote"
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Enums/EdgeEvent.swift
+──────────────────────────────
+/// Auto-generated — Namespace: edge
+public enum EdgeEvent: String, Codable, CaseIterable {
+    case edge_mic_audio_chunk = "edge_mic_audio_chunk"
+    case edge_pair_code = "edge_pair_code"
+    case edge_qr_code = "edge_qr_code"
+    case edge_ready = "edge_ready"
+    case edge_render_update = "edge_render_update"
+    case edge_session_ended = "edge_session_ended"
+    case edge_session_started = "edge_session_started"
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Enums/KaraokeEvent.swift
+──────────────────────────────
+/// Auto-generated — Namespace: karaoke
+public enum KaraokeEvent: String, Codable, CaseIterable {
+    case karaoke_lyric_timeline = "karaoke_lyric_timeline"
+    case karaoke_queue_updated = "karaoke_queue_updated"
+    case karaoke_scoring_update = "karaoke_scoring_update"
+    case karaoke_song_completed = "karaoke_song_completed"
+    case karaoke_song_paused = "karaoke_song_paused"
+    case karaoke_song_resumed = "karaoke_song_resumed"
+    case karaoke_song_selected = "karaoke_song_selected"
+    case karaoke_song_started = "karaoke_song_started"
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Enums/BcccEvent.swift
+──────────────────────────────
+/// Auto-generated — Namespace: bccc
+public enum BcccEvent: String, Codable, CaseIterable {
+    case bccc_ai_judgement = "bccc_ai_judgement"
+    case bccc_challenge_ended = "bccc_challenge_ended"
+    case bccc_challenge_started = "bccc_challenge_started"
+    case bccc_prompt_sent = "bccc_prompt_sent"
+    case bccc_user_response = "bccc_user_response"
+    case bccc_vote_closed = "bccc_vote_closed"
+    case bccc_vote_opened = "bccc_vote_opened"
+    case bccc_vote_results = "bccc_vote_results"
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Models/KaraokeModels.swift
+──────────────────────────────
+/// Auto-generated models — Namespace: karaoke
+import Foundation
+public struct karaoke_song_startedPayload: Codable {
+    public let song_id: String
+}
+
+public struct karaoke_queue_updatedPayload: Codable {
+    public let queue: [[String: AnyCodable]]
+}
+
+public struct karaoke_song_completedPayload: Codable {
+    public let song_id: String
+}
+
+public struct karaoke_scoring_updatePayload: Codable {
+    public let timing_accuracy: Double
+    public let section: String
+    public let score: Double
+    public let pitch_accuracy: Double
+}
+
+public struct karaoke_song_pausedPayload: Codable {
+    // No fields
+}
+
+public struct karaoke_lyric_timelinePayload: Codable {
+    public let timestamp: Double
+    public let lyric: String
+}
+
+public struct karaoke_song_selectedPayload: Codable {
+    public let duration: Double
+    public let song_id: String
+    public let artist: String
+    public let title: String
+}
+
+public struct karaoke_song_resumedPayload: Codable {
+    // No fields
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Models/EdgeModels.swift
+──────────────────────────────
+/// Auto-generated models — Namespace: edge
+import Foundation
+public struct edge_readyPayload: Codable {
+    // No fields
+}
+
+public struct edge_pair_codePayload: Codable {
+    public let pair_code: String
+}
+
+public struct edge_render_updatePayload: Codable {
+    public let payload: [String: AnyCodable]
+    public let screen: String
+}
+
+public struct edge_qr_codePayload: Codable {
+    public let qr_svg: String
+}
+
+public struct edge_mic_audio_chunkPayload: Codable {
+    public let base64_wav: String
+    public let singer_id: String
+}
+
+public struct edge_session_endedPayload: Codable {
+    // No fields
+}
+
+public struct edge_session_startedPayload: Codable {
+    public let session_id: String
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Models/BcccModels.swift
+──────────────────────────────
+/// Auto-generated models — Namespace: bccc
+import Foundation
+public struct bccc_user_responsePayload: Codable {
+    public let user_id: String
+    public let response_text: String
+    public let prompt_id: String
+}
+
+public struct bccc_vote_closedPayload: Codable {
+    public let vote_id: String
+}
+
+public struct bccc_challenge_startedPayload: Codable {
+    public let challenge_id: String
+}
+
+public struct bccc_ai_judgementPayload: Codable {
+    public let explanation: String
+    public let score: Double
+    public let prompt_id: String
+}
+
+public struct bccc_vote_openedPayload: Codable {
+    public let vote_id: String
+}
+
+public struct bccc_prompt_sentPayload: Codable {
+    public let text: String
+    public let duration: Double
+    public let prompt_id: String
+}
+
+public struct bccc_challenge_endedPayload: Codable {
+    // No fields
+}
+
+public struct bccc_vote_resultsPayload: Codable {
+    public let vote_id: String
+    public let results: [String: AnyCodable]
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Models/SystemModels.swift
+──────────────────────────────
+/// Auto-generated models — Namespace: system
+import Foundation
+public struct system_errorPayload: Codable {
+    public let code: String
+    public let message: String
+}
+
+public struct system_request_statusPayload: Codable {
+    // No fields
+}
+
+public struct system_heartbeatPayload: Codable {
+    // No fields
+}
+
+public struct system_state_updatePayload: Codable {
+    public let session_id: String
+    public let uptime: Double
+    public let active_namespace: String
+}
+
+public struct system_response_statusPayload: Codable {
+    public let message: String
+    public let ok: Bool
+}
+
+public struct system_session_closedPayload: Codable {
+    // No fields
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Models/PhoneModels.swift
+──────────────────────────────
+/// Auto-generated models — Namespace: phone
+import Foundation
+public struct phone_join_approvedPayload: Codable {
+    public let user_id: String
+}
+
+public struct phone_disconnectPayload: Codable {
+    // No fields
+}
+
+public struct phone_leader_transferredPayload: Codable {
+    public let from_user: String
+    public let to_user: String
+}
+
+public struct phone_join_rejectedPayload: Codable {
+    public let reason: String
+}
+
+public struct phone_submit_votePayload: Codable {
+    public let vote_id: String
+    public let value: String
+}
+
+public struct phone_role_assignedPayload: Codable {
+    public let user_id: String
+    public let role: String
+}
+
+public struct phone_submit_choicePayload: Codable {
+    public let choice: String
+}
+
+public struct phone_request_leaderPayload: Codable {
+    // No fields
+}
+
+public struct phone_singer_readyPayload: Codable {
+    public let user_id: String
+}
+
+public struct phone_join_roomPayload: Codable {
+    public let user_name: String
+    public let room_code: String
+    public let device_id: String
+}
+
+public struct phone_pingPayload: Codable {
+    // No fields
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Registry.swift
+──────────────────────────────
+/// Auto-generated payload registry (v2.0)
+import Foundation
+
+public enum PayloadRegistry {
+    public static func decode(namespace: String, event: String, payload: [String: Any]) -> Any? {
+        switch (namespace, event) {
+        case ("edge", "edge_ready"):
+            return edge_readyPayload()
+        case ("edge", "edge_pair_code"):
+            return try? JSONDecoder().decode(
+                edge_pair_codePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("edge", "edge_render_update"):
+            return try? JSONDecoder().decode(
+                edge_render_updatePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("edge", "edge_qr_code"):
+            return try? JSONDecoder().decode(
+                edge_qr_codePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("edge", "edge_mic_audio_chunk"):
+            return try? JSONDecoder().decode(
+                edge_mic_audio_chunkPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("edge", "edge_session_ended"):
+            return edge_session_endedPayload()
+        case ("edge", "edge_session_started"):
+            return try? JSONDecoder().decode(
+                edge_session_startedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("system", "system_error"):
+            return try? JSONDecoder().decode(
+                system_errorPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("system", "system_request_status"):
+            return system_request_statusPayload()
+        case ("system", "system_heartbeat"):
+            return system_heartbeatPayload()
+        case ("system", "system_state_update"):
+            return try? JSONDecoder().decode(
+                system_state_updatePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("system", "system_response_status"):
+            return try? JSONDecoder().decode(
+                system_response_statusPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("system", "system_session_closed"):
+            return system_session_closedPayload()
+        case ("karaoke", "karaoke_song_started"):
+            return try? JSONDecoder().decode(
+                karaoke_song_startedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_queue_updated"):
+            return try? JSONDecoder().decode(
+                karaoke_queue_updatedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_song_completed"):
+            return try? JSONDecoder().decode(
+                karaoke_song_completedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_scoring_update"):
+            return try? JSONDecoder().decode(
+                karaoke_scoring_updatePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_song_paused"):
+            return karaoke_song_pausedPayload()
+        case ("karaoke", "karaoke_lyric_timeline"):
+            return try? JSONDecoder().decode(
+                karaoke_lyric_timelinePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_song_selected"):
+            return try? JSONDecoder().decode(
+                karaoke_song_selectedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("karaoke", "karaoke_song_resumed"):
+            return karaoke_song_resumedPayload()
+        case ("bccc", "bccc_user_response"):
+            return try? JSONDecoder().decode(
+                bccc_user_responsePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_vote_closed"):
+            return try? JSONDecoder().decode(
+                bccc_vote_closedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_challenge_started"):
+            return try? JSONDecoder().decode(
+                bccc_challenge_startedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_ai_judgement"):
+            return try? JSONDecoder().decode(
+                bccc_ai_judgementPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_vote_opened"):
+            return try? JSONDecoder().decode(
+                bccc_vote_openedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_prompt_sent"):
+            return try? JSONDecoder().decode(
+                bccc_prompt_sentPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("bccc", "bccc_challenge_ended"):
+            return bccc_challenge_endedPayload()
+        case ("bccc", "bccc_vote_results"):
+            return try? JSONDecoder().decode(
+                bccc_vote_resultsPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_join_approved"):
+            return try? JSONDecoder().decode(
+                phone_join_approvedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_disconnect"):
+            return phone_disconnectPayload()
+        case ("phone", "phone_leader_transferred"):
+            return try? JSONDecoder().decode(
+                phone_leader_transferredPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_join_rejected"):
+            return try? JSONDecoder().decode(
+                phone_join_rejectedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_submit_vote"):
+            return try? JSONDecoder().decode(
+                phone_submit_votePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_role_assigned"):
+            return try? JSONDecoder().decode(
+                phone_role_assignedPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_submit_choice"):
+            return try? JSONDecoder().decode(
+                phone_submit_choicePayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_request_leader"):
+            return phone_request_leaderPayload()
+        case ("phone", "phone_singer_ready"):
+            return try? JSONDecoder().decode(
+                phone_singer_readyPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_join_room"):
+            return try? JSONDecoder().decode(
+                phone_join_roomPayload.self,
+                from: JSONSerialization.data(withJSONObject: payload)
+            )
+        case ("phone", "phone_ping"):
+            return phone_pingPayload()
+        default:
+            return nil
+        }
+    }
+}
+📄 /Users/anhnguyen/mtv/protocol/out/swift/MtvProtocol/Package.swift
+──────────────────────────────
+// swift-tools-version:5.8
+import PackageDescription
+
+let package = Package(
+    name: "MtvProtocol",
+    products: [
+        .library(name: "MtvProtocol", targets: ["MtvProtocol"]),
+    ],
+    targets: [
+        .target(name: "MtvProtocol"),
+    ]
+)

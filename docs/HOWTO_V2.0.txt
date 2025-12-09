@@ -1,0 +1,15 @@
+https://chatgpt.com/g/g-68efe87ce8e081918450f7abaa51ef77-google-workspace-copilot/c/69164b4d-2dbc-832e-9f09-166eb67fb58c
+
+    'How This Validator Integrates With Codegen
+Codegen pipeline becomes:
+cd mtv/protocol
+python validate.py            ✓ ensure correctness
+python codegen/generate_py.py ✓ generate Python
+node codegen/generate_ts.js   ✓ generate TS
+swift codegen/generate_swift.swift
+kotlin -script generate_kotlin.main.kts
+cargo run --manifest-path=rust_codegen/Cargo.toml
+
+
+If validation fails → no code gets updated, preventing drift.
+    '

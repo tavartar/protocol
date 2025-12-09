@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MTV Protocol Schema v2.0",
+  "description": "Canonical definition of MTV cross-device event protocol",
+  "type": "object",
+  "required": ["version", "namespaces"],
+  "additionalProperties": false,
+
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+
+    "meta": {
+      "type": "object",
+      "description": "Optional protocol metadata such as notes or authors",
+      "additionalProperties": true
+    },
+
+    "namespaces": {
+      "type": "object",
+      "description": "Root definition of all event namespaces",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["events"],
+        "additionalProperties": false,
+
+        "properties": {
+          "description": { "type": "string" },
+
+          "events": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "required": ["direction", "payload"],
+              "additionalProperties": false,
+
+              "properties": {
+                "description": { "type": "string" },
+
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "client→server",
+                    "server→client",
+                    "edge→server",
+                    "server→edge",
+                    "client↔edge"
+                  ]
+                },
+
+                "phase": {
+                  "type": "string",
+                  "enum": [
+                    "pre_session",
+                    "in_session",
+                    "post_session",
+                    "system"
+                  ]
+                },
+
+                "payload": {
+                  "type": "object",
+                  "description": "Payload definition: key → type",
+                  "additionalProperties": {
+                    "type": "string",
+                    "description": "A payload field type from allowed scalar/array/Object forms",
+                    "pattern": "^(string|number|boolean|object|array<.*>)$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

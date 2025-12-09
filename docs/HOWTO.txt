@@ -1,0 +1,390 @@
+https://chatgpt.com/g/g-68efe87ce8e081918450f7abaa51ef77-google-workspace-copilot/c/69164b4d-2dbc-832e-9f09-166eb67fb58c
+
+Below is a **clean, human-readable**, **developer-ready** `HOWTO.txt` that you can drop directly into:
+
+```
+mtv/protocol/HOWTO.txt
+```
+
+It explains:
+
+* What the **protocol system** is
+* How it **fits** into your BE/FE/Edge
+* How to **add a new event**
+* How to **add or modify a payload schema**
+* How to **regenerate all 5 language bindings**
+* How versioning works
+* How to avoid breaking changes
+
+It is written exactly in the style expected for a real engineering repo.
+
+---
+
+# ✅ **HOWTO.txt — Protocol System Guide**
+
+```
+===========================================================
+ MTV Unified Protocol System — HOWTO (v1.0)
+===========================================================
+
+This document explains:
+
+  1. What the “protocol” folder is
+  2. What protocol.json does
+  3. How events and payload schemas work
+  4. How to add new events
+  5. How to modify payload schemas
+  6. How to run the code generators
+  7. Expected outputs per language
+  8. Versioning and backward compatibility
+  9. Common pitfalls
+===========================================================
+```
+
+---
+
+## 1. What the “protocol” folder is
+
+The `mtv/protocol` directory contains the **single source of truth** for all
+message formats used between:
+
+* Backend (FastAPI, Python)
+* Frontend (TypeScript/React)
+* Mobile (Swift / Kotlin)
+* Edge (Raspberry PI, Laptop)
+* Future clients (Rust, iPad apps, etc.)
+
+All real-time communication (WebSockets, events, commands, responses)
+goes through **one unified protocol**, defined in:
+
+```
+mtv/protocol/protocol.json
+```
+
+This prevents BE/FE/PI “dialect drift” and guarantees all
+components share the same event names and payload schemas.
+
+---
+
+## 2. What protocol.json does
+
+`protocol.json` defines:
+
+### A. Namespaces
+
+(“system”, “karaoke”, “bccc”, “edge”)
+
+### B. Events under each namespace
+
+(e.g. `SONG_REQUEST`, `ROUND_START`, `PI_READY`)
+
+### C. Payload schemas
+
+(required fields, optional fields, types)
+
+Example (simplified):
+
+```json
+{
+  "version": "1.0.0",
+  "events": {
+    "karaoke": {
+      "SONG_REQUEST": {
+        "singer": "string",
+        "song": "string",
+        "producer": "string?"
+      }
+    }
+  }
+}
+```
+
+Each event is essentially:
+
+```
+(event_name, schema)
+```
+
+---
+
+## 3. How events + payload schemas work
+
+Each event has:
+
+```
+- A stable name (UPPERCASE)
+- A payload (a JSON object)
+```
+
+The code generators convert these into:
+
+* Python `Enum` + `Pydantic` model
+* TypeScript enum + Zod schema
+* Swift enum + Codable struct
+* Kotlin sealed classes + data classes
+* Rust enums + struct models
+
+So instead of writing raw JSON manually,
+you can do:
+
+```python
+ProtocolEvent(event=KaraokeEvent.SONG_REQUEST, payload=SongRequest(...))
+```
+
+or in TS:
+
+```ts
+socket.emit("event", new ProtocolEvent(KaraokeEvent.SONG_REQUEST, payload));
+```
+
+---
+
+## 4. How to add a new event
+
+### STEP 1 — Open protocol.json
+
+```
+mtv/protocol/protocol.json
+```
+
+### STEP 2 — Locate the namespace you want
+
+Example:
+
+```json
+"karaoke": { ... }
+```
+
+### STEP 3 — Add your new event under the namespace
+
+Example:
+
+```json
+"SONG_LIKED": {
+  "singer": "string",
+  "song": "string",
+  "user_id": "string"
+}
+```
+
+### STEP 4 — Save the file
+
+### STEP 5 — Regenerate all code (see section 6)
+
+---
+
+## 5. How to modify a payload schema
+
+Same process:
+
+### STEP 1
+
+Edit the schema for that event:
+
+Before:
+
+```json
+"SONG_REQUEST": {
+  "singer": "string",
+  "song": "string"
+}
+```
+
+After:
+
+```json
+"SONG_REQUEST": {
+  "singer": "string",
+  "song": "string",
+  "producer": "string?"
+}
+```
+
+* A trailing `?` means “optional”
+* Any type can be:
+
+  * string
+  * number
+  * boolean
+  * array<type>
+  * object { … }
+  * nullable versions (via `?`)
+
+### STEP 2 — Save
+
+### STEP 3 — Regenerate all code
+
+---
+
+## 6. How to regenerate all code
+
+From the repo root:
+
+### **Python**
+
+```
+python protocol/codegen/generate_py.py
+```
+
+### **TypeScript**
+
+```
+node protocol/codegen/generate_ts.js
+```
+
+### **Swift**
+
+```
+swift protocol/codegen/generate_swift.swift
+```
+
+### **Kotlin**
+
+```
+kotlinc -script protocol/codegen/generate_kotlin.main.kts
+```
+
+### **Rust**
+
+```
+cd protocol/codegen/rust_codegen
+cargo run
+cd ../../..
+```
+
+All outputs go into:
+
+```
+mtv/protocol/out/<language>/
+```
+
+These are what you import into BE/FE/PI.
+
+---
+
+## 7. Expected outputs
+
+### Python
+
+```
+protocol/out/python/mtv_protocol/
+```
+
+### TypeScript
+
+```
+protocol/out/ts/mtv_protocol/
+```
+
+### Swift
+
+```
+protocol/out/swift/MtvProtocol/
+```
+
+### Kotlin
+
+```
+protocol/out/kotlin/enums/
+protocol/out/kotlin/models/
+```
+
+### Rust
+
+```
+protocol/out/rust/mtv_protocol/
+```
+
+---
+
+## 8. Versioning rules
+
+`protocol.json` contains:
+
+```json
+"version": "1.0.0"
+```
+
+Follow semantic versioning:
+
+### Patch (1.0.x)
+
+* add optional fields
+* add new events
+* make non-breaking changes
+
+### Minor (1.x.0)
+
+* add new namespaces
+* add new required fields (BE/FE must update)
+
+### Major (x.0.0)
+
+* rename events
+* remove fields
+* break compatibility
+
+For demo purposes, stay within **1.x.x**.
+
+---
+
+## 9. Common pitfalls
+
+### ❌ Renaming an event
+
+Never rename an event in place.
+
+Instead:
+
+```
+OLD_EVENT_NAME  → keep until all clients update
+NEW_EVENT_NAME  → introduce as replacement
+```
+
+### ❌ Removing fields
+
+Instead mark as optional:
+
+```
+"old_field": "string?"
+```
+
+### ❌ Forgetting to re-run codegen
+
+If BE and FE disagree on schema, the system will break silently.
+
+### ❌ Editing output files
+
+Never edit files inside `protocol/out/*`.
+They are generated. Edit only:
+
+```
+protocol.json
+```
+
+---
+
+## Final Notes
+
+* `protocol.json` is the "contract" for the entire MTV stack.
+* All components must use the generated bindings.
+* No more "stringly typed" events.
+* This enables stability, portability, and scalability
+  as the platform expands (Django migration, multi-app setup).
+
+```
+===========================================================
+ END OF FILE — HOWTO.txt
+===========================================================
+```
+
+---
+
+If you want, I can also generate:
+
+📌 A **CONTRIBUTING.md** for protocol changes
+📌 A **CHANGELOG template**
+📌 A **migration guide** for updating BE/FE/PI after protocol changes
+
+Just tell me.
+

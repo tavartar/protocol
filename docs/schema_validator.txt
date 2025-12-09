@@ -1,0 +1,2 @@
+https://chatgpt.com/g/g-68efe87ce8e081918450f7abaa51ef77-google-workspace-copilot/c/69164b4d-2dbc-832e-9f09-166eb67fb58c
+    'Generate schema v2.0 + validators'

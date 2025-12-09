@@ -1,0 +1,445 @@
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/registry.py
+──────────────────────────────
+from typing import Dict, Tuple, Type
+from pydantic import BaseModel
+
+from .models.system import system_group_registeredPayload
+from .models.system import system_phase_changedPayload
+from .models.system import system_heartbeatPayload
+from .models.system import system_errorPayload
+from .models.system import system_state_updatePayload
+from .models.system import system_request_statusPayload
+from .models.system import system_response_statusPayload
+from .models.system import system_session_closedPayload
+from .models.system import system_outro_messagePayload
+from .models.edge import edge_readyPayload
+from .models.edge import edge_pair_codePayload
+from .models.edge import edge_qr_codePayload
+from .models.edge import edge_session_startedPayload
+from .models.edge import edge_session_endedPayload
+from .models.edge import edge_render_updatePayload
+from .models.edge import edge_mic_audio_chunkPayload
+from .models.karaoke import karaoke_song_registeredPayload
+from .models.karaoke import karaoke_song_registration_acceptedPayload
+from .models.karaoke import karaoke_song_selectedPayload
+from .models.karaoke import karaoke_song_startedPayload
+from .models.karaoke import karaoke_song_pausedPayload
+from .models.karaoke import karaoke_song_resumedPayload
+from .models.karaoke import karaoke_song_completedPayload
+from .models.karaoke import karaoke_queue_updatedPayload
+from .models.karaoke import karaoke_lyric_timelinePayload
+from .models.karaoke import karaoke_scoring_updatePayload
+from .models.karaoke import karaoke_performance_scoredPayload
+from .models.bccc import bccc_session_setupPayload
+from .models.bccc import bccc_session_configuredPayload
+from .models.bccc import bccc_challenge_startedPayload
+from .models.bccc import bccc_challenge_endedPayload
+from .models.bccc import bccc_vote_openedPayload
+from .models.bccc import bccc_vote_closedPayload
+from .models.bccc import bccc_vote_resultsPayload
+from .models.bccc import bccc_prompt_sentPayload
+from .models.bccc import bccc_user_responsePayload
+from .models.bccc import bccc_ai_judgementPayload
+from .models.bccc import bccc_round_resultPayload
+from .models.phone import phone_user_registeredPayload
+from .models.phone import phone_join_roomPayload
+from .models.phone import phone_join_approvedPayload
+from .models.phone import phone_join_rejectedPayload
+from .models.phone import phone_role_assignedPayload
+from .models.phone import phone_request_leaderPayload
+from .models.phone import phone_leader_transferredPayload
+from .models.phone import phone_submit_votePayload
+from .models.phone import phone_submit_choicePayload
+from .models.phone import phone_singer_readyPayload
+from .models.phone import phone_pingPayload
+from .models.phone import phone_disconnectPayload
+
+EVENT_MODELS: Dict[Tuple[str, str], Type[BaseModel]] = {}
+
+EVENT_MODELS[("system", "system_group_registered")] = system_group_registeredPayload
+EVENT_MODELS[("system", "system_phase_changed")] = system_phase_changedPayload
+EVENT_MODELS[("system", "system_heartbeat")] = system_heartbeatPayload
+EVENT_MODELS[("system", "system_error")] = system_errorPayload
+EVENT_MODELS[("system", "system_state_update")] = system_state_updatePayload
+EVENT_MODELS[("system", "system_request_status")] = system_request_statusPayload
+EVENT_MODELS[("system", "system_response_status")] = system_response_statusPayload
+EVENT_MODELS[("system", "system_session_closed")] = system_session_closedPayload
+EVENT_MODELS[("system", "system_outro_message")] = system_outro_messagePayload
+EVENT_MODELS[("edge", "edge_ready")] = edge_readyPayload
+EVENT_MODELS[("edge", "edge_pair_code")] = edge_pair_codePayload
+EVENT_MODELS[("edge", "edge_qr_code")] = edge_qr_codePayload
+EVENT_MODELS[("edge", "edge_session_started")] = edge_session_startedPayload
+EVENT_MODELS[("edge", "edge_session_ended")] = edge_session_endedPayload
+EVENT_MODELS[("edge", "edge_render_update")] = edge_render_updatePayload
+EVENT_MODELS[("edge", "edge_mic_audio_chunk")] = edge_mic_audio_chunkPayload
+EVENT_MODELS[("karaoke", "karaoke_song_registered")] = karaoke_song_registeredPayload
+EVENT_MODELS[("karaoke", "karaoke_song_registration_accepted")] = karaoke_song_registration_acceptedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_selected")] = karaoke_song_selectedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_started")] = karaoke_song_startedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_paused")] = karaoke_song_pausedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_resumed")] = karaoke_song_resumedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_completed")] = karaoke_song_completedPayload
+EVENT_MODELS[("karaoke", "karaoke_queue_updated")] = karaoke_queue_updatedPayload
+EVENT_MODELS[("karaoke", "karaoke_lyric_timeline")] = karaoke_lyric_timelinePayload
+EVENT_MODELS[("karaoke", "karaoke_scoring_update")] = karaoke_scoring_updatePayload
+EVENT_MODELS[("karaoke", "karaoke_performance_scored")] = karaoke_performance_scoredPayload
+EVENT_MODELS[("bccc", "bccc_session_setup")] = bccc_session_setupPayload
+EVENT_MODELS[("bccc", "bccc_session_configured")] = bccc_session_configuredPayload
+EVENT_MODELS[("bccc", "bccc_challenge_started")] = bccc_challenge_startedPayload
+EVENT_MODELS[("bccc", "bccc_challenge_ended")] = bccc_challenge_endedPayload
+EVENT_MODELS[("bccc", "bccc_vote_opened")] = bccc_vote_openedPayload
+EVENT_MODELS[("bccc", "bccc_vote_closed")] = bccc_vote_closedPayload
+EVENT_MODELS[("bccc", "bccc_vote_results")] = bccc_vote_resultsPayload
+EVENT_MODELS[("bccc", "bccc_prompt_sent")] = bccc_prompt_sentPayload
+EVENT_MODELS[("bccc", "bccc_user_response")] = bccc_user_responsePayload
+EVENT_MODELS[("bccc", "bccc_ai_judgement")] = bccc_ai_judgementPayload
+EVENT_MODELS[("bccc", "bccc_round_result")] = bccc_round_resultPayload
+EVENT_MODELS[("phone", "phone_user_registered")] = phone_user_registeredPayload
+EVENT_MODELS[("phone", "phone_join_room")] = phone_join_roomPayload
+EVENT_MODELS[("phone", "phone_join_approved")] = phone_join_approvedPayload
+EVENT_MODELS[("phone", "phone_join_rejected")] = phone_join_rejectedPayload
+EVENT_MODELS[("phone", "phone_role_assigned")] = phone_role_assignedPayload
+EVENT_MODELS[("phone", "phone_request_leader")] = phone_request_leaderPayload
+EVENT_MODELS[("phone", "phone_leader_transferred")] = phone_leader_transferredPayload
+EVENT_MODELS[("phone", "phone_submit_vote")] = phone_submit_votePayload
+EVENT_MODELS[("phone", "phone_submit_choice")] = phone_submit_choicePayload
+EVENT_MODELS[("phone", "phone_singer_ready")] = phone_singer_readyPayload
+EVENT_MODELS[("phone", "phone_ping")] = phone_pingPayload
+EVENT_MODELS[("phone", "phone_disconnect")] = phone_disconnectPayload
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/enums/phone.py
+──────────────────────────────
+from enum import Enum
+
+class PhoneEvent(str, Enum):
+    phone_user_registered = "phone_user_registered"
+    phone_join_room = "phone_join_room"
+    phone_join_approved = "phone_join_approved"
+    phone_join_rejected = "phone_join_rejected"
+    phone_role_assigned = "phone_role_assigned"
+    phone_request_leader = "phone_request_leader"
+    phone_leader_transferred = "phone_leader_transferred"
+    phone_submit_vote = "phone_submit_vote"
+    phone_submit_choice = "phone_submit_choice"
+    phone_singer_ready = "phone_singer_ready"
+    phone_ping = "phone_ping"
+    phone_disconnect = "phone_disconnect"
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/enums/system.py
+──────────────────────────────
+from enum import Enum
+
+class SystemEvent(str, Enum):
+    system_group_registered = "system_group_registered"
+    system_phase_changed = "system_phase_changed"
+    system_heartbeat = "system_heartbeat"
+    system_error = "system_error"
+    system_state_update = "system_state_update"
+    system_request_status = "system_request_status"
+    system_response_status = "system_response_status"
+    system_session_closed = "system_session_closed"
+    system_outro_message = "system_outro_message"
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/enums/edge.py
+──────────────────────────────
+from enum import Enum
+
+class EdgeEvent(str, Enum):
+    edge_ready = "edge_ready"
+    edge_pair_code = "edge_pair_code"
+    edge_qr_code = "edge_qr_code"
+    edge_session_started = "edge_session_started"
+    edge_session_ended = "edge_session_ended"
+    edge_render_update = "edge_render_update"
+    edge_mic_audio_chunk = "edge_mic_audio_chunk"
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/enums/bccc.py
+──────────────────────────────
+from enum import Enum
+
+class BcccEvent(str, Enum):
+    bccc_session_setup = "bccc_session_setup"
+    bccc_session_configured = "bccc_session_configured"
+    bccc_challenge_started = "bccc_challenge_started"
+    bccc_challenge_ended = "bccc_challenge_ended"
+    bccc_vote_opened = "bccc_vote_opened"
+    bccc_vote_closed = "bccc_vote_closed"
+    bccc_vote_results = "bccc_vote_results"
+    bccc_prompt_sent = "bccc_prompt_sent"
+    bccc_user_response = "bccc_user_response"
+    bccc_ai_judgement = "bccc_ai_judgement"
+    bccc_round_result = "bccc_round_result"
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/enums/karaoke.py
+──────────────────────────────
+from enum import Enum
+
+class KaraokeEvent(str, Enum):
+    karaoke_song_registered = "karaoke_song_registered"
+    karaoke_song_registration_accepted = "karaoke_song_registration_accepted"
+    karaoke_song_selected = "karaoke_song_selected"
+    karaoke_song_started = "karaoke_song_started"
+    karaoke_song_paused = "karaoke_song_paused"
+    karaoke_song_resumed = "karaoke_song_resumed"
+    karaoke_song_completed = "karaoke_song_completed"
+    karaoke_queue_updated = "karaoke_queue_updated"
+    karaoke_lyric_timeline = "karaoke_lyric_timeline"
+    karaoke_scoring_update = "karaoke_scoring_update"
+    karaoke_performance_scored = "karaoke_performance_scored"
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/__init__.py
+──────────────────────────────
+# mtv_protocol package
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/models/phone.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: phone
+
+class phone_user_registeredPayload(BaseModel):
+    user_id: str
+    user_name: str
+    group_id: str
+
+class phone_join_roomPayload(BaseModel):
+    room_code: str
+    device_id: str
+    user_name: str
+
+class phone_join_approvedPayload(BaseModel):
+    user_id: str
+
+class phone_join_rejectedPayload(BaseModel):
+    reason: str
+
+class phone_role_assignedPayload(BaseModel):
+    user_id: str
+    role: str
+
+class phone_request_leaderPayload(BaseModel):
+    pass
+
+class phone_leader_transferredPayload(BaseModel):
+    from_user: str
+    to_user: str
+
+class phone_submit_votePayload(BaseModel):
+    vote_id: str
+    value: str
+
+class phone_submit_choicePayload(BaseModel):
+    choice: str
+
+class phone_singer_readyPayload(BaseModel):
+    user_id: str
+
+class phone_pingPayload(BaseModel):
+    pass
+
+class phone_disconnectPayload(BaseModel):
+    pass
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/models/system.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: system
+
+class system_group_registeredPayload(BaseModel):
+    group_id: str
+    group_name: str
+
+class system_phase_changedPayload(BaseModel):
+    session_id: str
+    phase: str
+
+class system_heartbeatPayload(BaseModel):
+    pass
+
+class system_errorPayload(BaseModel):
+    message: str
+    code: str
+
+class system_state_updatePayload(BaseModel):
+    uptime: float
+    active_namespace: str
+    session_id: str
+
+class system_request_statusPayload(BaseModel):
+    pass
+
+class system_response_statusPayload(BaseModel):
+    ok: bool
+    message: str
+
+class system_session_closedPayload(BaseModel):
+    pass
+
+class system_outro_messagePayload(BaseModel):
+    message: str
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/models/edge.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: edge
+
+class edge_readyPayload(BaseModel):
+    pass
+
+class edge_pair_codePayload(BaseModel):
+    pair_code: str
+
+class edge_qr_codePayload(BaseModel):
+    qr_svg: str
+
+class edge_session_startedPayload(BaseModel):
+    session_id: str
+
+class edge_session_endedPayload(BaseModel):
+    pass
+
+class edge_render_updatePayload(BaseModel):
+    screen: str
+    payload: dict
+
+class edge_mic_audio_chunkPayload(BaseModel):
+    singer_id: str
+    base64_wav: str
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/models/bccc.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: bccc
+
+class bccc_session_setupPayload(BaseModel):
+    session_name: str
+    min_bet: float
+    max_bet: float
+    rounds: float
+    currency: str
+
+class bccc_session_configuredPayload(BaseModel):
+    session_name: str
+    min_bet: float
+    max_bet: float
+    rounds: float
+    currency: str
+    host_id: str
+
+class bccc_challenge_startedPayload(BaseModel):
+    challenge_id: str
+
+class bccc_challenge_endedPayload(BaseModel):
+    pass
+
+class bccc_vote_openedPayload(BaseModel):
+    vote_id: str
+
+class bccc_vote_closedPayload(BaseModel):
+    vote_id: str
+
+class bccc_vote_resultsPayload(BaseModel):
+    vote_id: str
+    results: dict
+
+class bccc_prompt_sentPayload(BaseModel):
+    prompt_id: str
+    text: str
+    duration: float
+
+class bccc_user_responsePayload(BaseModel):
+    prompt_id: str
+    user_id: str
+    response_text: str
+
+class bccc_ai_judgementPayload(BaseModel):
+    prompt_id: str
+    score: float
+    explanation: str
+
+class bccc_round_resultPayload(BaseModel):
+    round_number: float
+    symbol_results: list[str]
+    payouts: list[dict]
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/models/karaoke.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: karaoke
+
+class karaoke_song_registeredPayload(BaseModel):
+    user_id: str
+    member_name: str
+    song_title: str
+    youtube_id: str
+    tone: str
+    producer: str
+
+class karaoke_song_registration_acceptedPayload(BaseModel):
+    song_id: str
+    member_name: str
+    song_title: str
+    queue_position: float
+
+class karaoke_song_selectedPayload(BaseModel):
+    song_id: str
+    title: str
+    artist: str
+    duration: float
+
+class karaoke_song_startedPayload(BaseModel):
+    song_id: str
+
+class karaoke_song_pausedPayload(BaseModel):
+    pass
+
+class karaoke_song_resumedPayload(BaseModel):
+    pass
+
+class karaoke_song_completedPayload(BaseModel):
+    song_id: str
+
+class karaoke_queue_updatedPayload(BaseModel):
+    queue: list[dict]
+
+class karaoke_lyric_timelinePayload(BaseModel):
+    timestamp: float
+    lyric: str
+
+class karaoke_scoring_updatePayload(BaseModel):
+    score: float
+    pitch_accuracy: float
+    timing_accuracy: float
+    section: str
+
+class karaoke_performance_scoredPayload(BaseModel):
+    user_id: str
+    song_id: str
+    score: float
+    comments: str
+
+📄 /Users/anhnguyen/mtv/protocol/out/python/mtv_protocol/protocol_event.py
+──────────────────────────────
+from pydantic import BaseModel
+from typing import Optional
+
+
+class ProtocolEvent(BaseModel):
+    namespace: str
+    event: str
+    payload: dict
+    direction: str
+    phase: str
+
+    def model(self) -> Optional[BaseModel]:
+        """Return the Pydantic model matching this event payload (if any)."""
+        from .registry import EVENT_MODELS
+        key = (self.namespace, self.event)
+        Model = EVENT_MODELS.get(key)
+        if Model:
+            return Model(**self.payload)
+        return None

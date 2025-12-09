@@ -1,0 +1,634 @@
+
+📄 protocol/out/python/mtv_protocol/registry.py
+──────────────────────────────
+from typing import Dict, Tuple, Type
+from pydantic import BaseModel
+
+from .models.system import system_heartbeatPayload
+from .models.system import system_errorPayload
+from .models.system import system_state_updatePayload
+from .models.system import system_request_statusPayload
+from .models.system import system_response_statusPayload
+from .models.system import system_session_closedPayload
+from .models.edge import edge_readyPayload
+from .models.edge import edge_pair_codePayload
+from .models.edge import edge_qr_codePayload
+from .models.edge import edge_session_startedPayload
+from .models.edge import edge_session_endedPayload
+from .models.edge import edge_render_updatePayload
+from .models.edge import edge_mic_audio_chunkPayload
+from .models.karaoke import karaoke_song_selectedPayload
+from .models.karaoke import karaoke_song_startedPayload
+from .models.karaoke import karaoke_song_pausedPayload
+from .models.karaoke import karaoke_song_resumedPayload
+from .models.karaoke import karaoke_song_completedPayload
+from .models.karaoke import karaoke_queue_updatedPayload
+from .models.karaoke import karaoke_lyric_timelinePayload
+from .models.karaoke import karaoke_scoring_updatePayload
+from .models.bccc import bccc_challenge_startedPayload
+from .models.bccc import bccc_challenge_endedPayload
+from .models.bccc import bccc_vote_openedPayload
+from .models.bccc import bccc_vote_closedPayload
+from .models.bccc import bccc_vote_resultsPayload
+from .models.bccc import bccc_prompt_sentPayload
+from .models.bccc import bccc_user_responsePayload
+from .models.bccc import bccc_ai_judgementPayload
+from .models.phone import phone_join_roomPayload
+from .models.phone import phone_join_approvedPayload
+from .models.phone import phone_join_rejectedPayload
+from .models.phone import phone_role_assignedPayload
+from .models.phone import phone_request_leaderPayload
+from .models.phone import phone_leader_transferredPayload
+from .models.phone import phone_submit_votePayload
+from .models.phone import phone_submit_choicePayload
+from .models.phone import phone_singer_readyPayload
+from .models.phone import phone_pingPayload
+from .models.phone import phone_disconnectPayload
+
+EVENT_MODELS: Dict[Tuple[str, str], Type[BaseModel]] = {}
+
+EVENT_MODELS[("system", "system_heartbeat")] = system_heartbeatPayload
+EVENT_MODELS[("system", "system_error")] = system_errorPayload
+EVENT_MODELS[("system", "system_state_update")] = system_state_updatePayload
+EVENT_MODELS[("system", "system_request_status")] = system_request_statusPayload
+EVENT_MODELS[("system", "system_response_status")] = system_response_statusPayload
+EVENT_MODELS[("system", "system_session_closed")] = system_session_closedPayload
+EVENT_MODELS[("edge", "edge_ready")] = edge_readyPayload
+EVENT_MODELS[("edge", "edge_pair_code")] = edge_pair_codePayload
+EVENT_MODELS[("edge", "edge_qr_code")] = edge_qr_codePayload
+EVENT_MODELS[("edge", "edge_session_started")] = edge_session_startedPayload
+EVENT_MODELS[("edge", "edge_session_ended")] = edge_session_endedPayload
+EVENT_MODELS[("edge", "edge_render_update")] = edge_render_updatePayload
+EVENT_MODELS[("edge", "edge_mic_audio_chunk")] = edge_mic_audio_chunkPayload
+EVENT_MODELS[("karaoke", "karaoke_song_selected")] = karaoke_song_selectedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_started")] = karaoke_song_startedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_paused")] = karaoke_song_pausedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_resumed")] = karaoke_song_resumedPayload
+EVENT_MODELS[("karaoke", "karaoke_song_completed")] = karaoke_song_completedPayload
+EVENT_MODELS[("karaoke", "karaoke_queue_updated")] = karaoke_queue_updatedPayload
+EVENT_MODELS[("karaoke", "karaoke_lyric_timeline")] = karaoke_lyric_timelinePayload
+EVENT_MODELS[("karaoke", "karaoke_scoring_update")] = karaoke_scoring_updatePayload
+EVENT_MODELS[("bccc", "bccc_challenge_started")] = bccc_challenge_startedPayload
+EVENT_MODELS[("bccc", "bccc_challenge_ended")] = bccc_challenge_endedPayload
+EVENT_MODELS[("bccc", "bccc_vote_opened")] = bccc_vote_openedPayload
+EVENT_MODELS[("bccc", "bccc_vote_closed")] = bccc_vote_closedPayload
+EVENT_MODELS[("bccc", "bccc_vote_results")] = bccc_vote_resultsPayload
+EVENT_MODELS[("bccc", "bccc_prompt_sent")] = bccc_prompt_sentPayload
+EVENT_MODELS[("bccc", "bccc_user_response")] = bccc_user_responsePayload
+EVENT_MODELS[("bccc", "bccc_ai_judgement")] = bccc_ai_judgementPayload
+EVENT_MODELS[("phone", "phone_join_room")] = phone_join_roomPayload
+EVENT_MODELS[("phone", "phone_join_approved")] = phone_join_approvedPayload
+EVENT_MODELS[("phone", "phone_join_rejected")] = phone_join_rejectedPayload
+EVENT_MODELS[("phone", "phone_role_assigned")] = phone_role_assignedPayload
+EVENT_MODELS[("phone", "phone_request_leader")] = phone_request_leaderPayload
+EVENT_MODELS[("phone", "phone_leader_transferred")] = phone_leader_transferredPayload
+EVENT_MODELS[("phone", "phone_submit_vote")] = phone_submit_votePayload
+EVENT_MODELS[("phone", "phone_submit_choice")] = phone_submit_choicePayload
+EVENT_MODELS[("phone", "phone_singer_ready")] = phone_singer_readyPayload
+EVENT_MODELS[("phone", "phone_ping")] = phone_pingPayload
+EVENT_MODELS[("phone", "phone_disconnect")] = phone_disconnectPayload
+📄 protocol/out/python/mtv_protocol/enums/phone.py
+──────────────────────────────
+from enum import Enum
+
+class PhoneEvent(str, Enum):
+    phone_join_room = "phone_join_room"
+    phone_join_approved = "phone_join_approved"
+    phone_join_rejected = "phone_join_rejected"
+    phone_role_assigned = "phone_role_assigned"
+    phone_request_leader = "phone_request_leader"
+    phone_leader_transferred = "phone_leader_transferred"
+    phone_submit_vote = "phone_submit_vote"
+    phone_submit_choice = "phone_submit_choice"
+    phone_singer_ready = "phone_singer_ready"
+    phone_ping = "phone_ping"
+    phone_disconnect = "phone_disconnect"
+
+📄 protocol/out/python/mtv_protocol/enums/system.py
+──────────────────────────────
+from enum import Enum
+
+class SystemEvent(str, Enum):
+    system_heartbeat = "system_heartbeat"
+    system_error = "system_error"
+    system_state_update = "system_state_update"
+    system_request_status = "system_request_status"
+    system_response_status = "system_response_status"
+    system_session_closed = "system_session_closed"
+
+📄 protocol/out/python/mtv_protocol/enums/edge.py
+──────────────────────────────
+from enum import Enum
+
+class EdgeEvent(str, Enum):
+    edge_ready = "edge_ready"
+    edge_pair_code = "edge_pair_code"
+    edge_qr_code = "edge_qr_code"
+    edge_session_started = "edge_session_started"
+    edge_session_ended = "edge_session_ended"
+    edge_render_update = "edge_render_update"
+    edge_mic_audio_chunk = "edge_mic_audio_chunk"
+
+📄 protocol/out/python/mtv_protocol/enums/bccc.py
+──────────────────────────────
+from enum import Enum
+
+class BcccEvent(str, Enum):
+    bccc_challenge_started = "bccc_challenge_started"
+    bccc_challenge_ended = "bccc_challenge_ended"
+    bccc_vote_opened = "bccc_vote_opened"
+    bccc_vote_closed = "bccc_vote_closed"
+    bccc_vote_results = "bccc_vote_results"
+    bccc_prompt_sent = "bccc_prompt_sent"
+    bccc_user_response = "bccc_user_response"
+    bccc_ai_judgement = "bccc_ai_judgement"
+
+📄 protocol/out/python/mtv_protocol/enums/karaoke.py
+──────────────────────────────
+from enum import Enum
+
+class KaraokeEvent(str, Enum):
+    karaoke_song_selected = "karaoke_song_selected"
+    karaoke_song_started = "karaoke_song_started"
+    karaoke_song_paused = "karaoke_song_paused"
+    karaoke_song_resumed = "karaoke_song_resumed"
+    karaoke_song_completed = "karaoke_song_completed"
+    karaoke_queue_updated = "karaoke_queue_updated"
+    karaoke_lyric_timeline = "karaoke_lyric_timeline"
+    karaoke_scoring_update = "karaoke_scoring_update"
+
+📄 protocol/out/python/mtv_protocol/__init__.py
+──────────────────────────────
+# mtv_protocol package
+
+📄 protocol/out/python/mtv_protocol/models/phone.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: phone
+
+class phone_join_roomPayload(BaseModel):
+    room_code: str
+    device_id: str
+    user_name: str
+
+class phone_join_approvedPayload(BaseModel):
+    user_id: str
+
+class phone_join_rejectedPayload(BaseModel):
+    reason: str
+
+class phone_role_assignedPayload(BaseModel):
+    user_id: str
+    role: str
+
+class phone_request_leaderPayload(BaseModel):
+    pass
+
+class phone_leader_transferredPayload(BaseModel):
+    from_user: str
+    to_user: str
+
+class phone_submit_votePayload(BaseModel):
+    vote_id: str
+    value: str
+
+class phone_submit_choicePayload(BaseModel):
+    choice: str
+
+class phone_singer_readyPayload(BaseModel):
+    user_id: str
+
+class phone_pingPayload(BaseModel):
+    pass
+
+class phone_disconnectPayload(BaseModel):
+    pass
+
+📄 protocol/out/python/mtv_protocol/models/system.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: system
+
+class system_heartbeatPayload(BaseModel):
+    pass
+
+class system_errorPayload(BaseModel):
+    message: str
+    code: str
+
+class system_state_updatePayload(BaseModel):
+    uptime: float
+    active_namespace: str
+    session_id: str
+
+class system_request_statusPayload(BaseModel):
+    pass
+
+class system_response_statusPayload(BaseModel):
+    ok: bool
+    message: str
+
+class system_session_closedPayload(BaseModel):
+    pass
+
+📄 protocol/out/python/mtv_protocol/models/edge.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: edge
+
+class edge_readyPayload(BaseModel):
+    pass
+
+class edge_pair_codePayload(BaseModel):
+    pair_code: str
+
+class edge_qr_codePayload(BaseModel):
+    qr_svg: str
+
+class edge_session_startedPayload(BaseModel):
+    session_id: str
+
+class edge_session_endedPayload(BaseModel):
+    pass
+
+class edge_render_updatePayload(BaseModel):
+    screen: str
+    payload: dict
+
+class edge_mic_audio_chunkPayload(BaseModel):
+    singer_id: str
+    base64_wav: str
+
+📄 protocol/out/python/mtv_protocol/models/bccc.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: bccc
+
+class bccc_challenge_startedPayload(BaseModel):
+    challenge_id: str
+
+class bccc_challenge_endedPayload(BaseModel):
+    pass
+
+class bccc_vote_openedPayload(BaseModel):
+    vote_id: str
+
+class bccc_vote_closedPayload(BaseModel):
+    vote_id: str
+
+class bccc_vote_resultsPayload(BaseModel):
+    vote_id: str
+    results: dict
+
+class bccc_prompt_sentPayload(BaseModel):
+    prompt_id: str
+    text: str
+    duration: float
+
+class bccc_user_responsePayload(BaseModel):
+    prompt_id: str
+    user_id: str
+    response_text: str
+
+class bccc_ai_judgementPayload(BaseModel):
+    prompt_id: str
+    score: float
+    explanation: str
+
+📄 protocol/out/python/mtv_protocol/models/karaoke.py
+──────────────────────────────
+from pydantic import BaseModel
+
+# Payload Models for namespace: karaoke
+
+class karaoke_song_selectedPayload(BaseModel):
+    song_id: str
+    title: str
+    artist: str
+    duration: float
+
+class karaoke_song_startedPayload(BaseModel):
+    song_id: str
+
+class karaoke_song_pausedPayload(BaseModel):
+    pass
+
+class karaoke_song_resumedPayload(BaseModel):
+    pass
+
+class karaoke_song_completedPayload(BaseModel):
+    song_id: str
+
+class karaoke_queue_updatedPayload(BaseModel):
+    queue: list[dict]
+
+class karaoke_lyric_timelinePayload(BaseModel):
+    timestamp: float
+    lyric: str
+
+class karaoke_scoring_updatePayload(BaseModel):
+    score: float
+    pitch_accuracy: float
+    timing_accuracy: float
+    section: str
+
+📄 protocol/out/python/mtv_protocol/protocol_event.py
+──────────────────────────────
+from pydantic import BaseModel
+from typing import Optional
+
+
+class ProtocolEvent(BaseModel):
+    namespace: str
+    event: str
+    payload: dict
+    direction: str
+    phase: str
+
+    def model(self) -> Optional[BaseModel]:
+        """Return the Pydantic model matching this event payload (if any)."""
+        from .registry import EVENT_MODELS
+        key = (self.namespace, self.event)
+        Model = EVENT_MODELS.get(key)
+        if Model:
+            return Model(**self.payload)
+        return None
+
+📄 protocol/codegen/generate_py.py
+──────────────────────────────
+#!/usr/bin/env python3
+"""
+generate_py.py
+Python protocol generator for protocol v2.0
+
+This version:
+ - Reads protocol/protocol.json (v2.0 format)
+ - Supports new structure:
+     {
+       "version": "2.0.0",
+       "meta": {...},
+       "namespaces": {
+           "<ns>": {
+              "description": "...",
+              "events": {
+                  "<event>": {
+                      "direction": "...",
+                      "phase": "...",
+                      "payload": {...}
+                  }
+              }
+           }
+       }
+     }
+ - Outputs:
+      mtv_protocol/
+         enums/
+         models/
+         protocol_event.py
+         registry.py
+"""
+
+import json
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+PROTO_PATH = REPO_ROOT / "protocol" / "protocol.json"
+OUT_ROOT = REPO_ROOT / "protocol" / "out" / "python" / "mtv_protocol"
+
+
+# -----------------------------------------------------------
+# Directory helpers
+# -----------------------------------------------------------
+
+def ensure_dir(p: Path):
+    p.mkdir(parents=True, exist_ok=True)
+
+
+# -----------------------------------------------------------
+# Type mapping
+# -----------------------------------------------------------
+
+def py_type(t: str) -> str:
+    """Map protocol scalar/complex type → Python type string."""
+    if t == "string":
+        return "str"
+    if t == "number":
+        return "float"
+    if t == "boolean":
+        return "bool"
+    if t == "object":
+        return "dict"
+
+    if t.startswith("array<") and t.endswith(">"):
+        inner = t[6:-1]
+        return f"list[{py_type(inner)}]"
+
+    return "str"  # fallback
+
+
+# -----------------------------------------------------------
+# ENUM generator
+# -----------------------------------------------------------
+
+def gen_enum(namespace: str, events: dict) -> str:
+    lines = [
+        "from enum import Enum",
+        "",
+        f"class {namespace.capitalize()}Event(str, Enum):",
+    ]
+    for event in events.keys():
+        lines.append(f"    {event} = \"{event}\"")
+    return "\n".join(lines) + "\n"
+
+
+# -----------------------------------------------------------
+# Pydantic models generator
+# -----------------------------------------------------------
+
+def gen_models(namespace: str, events: dict) -> str:
+    lines = [
+        "from pydantic import BaseModel",
+        "",
+        f"# Payload Models for namespace: {namespace}",
+        "",
+    ]
+
+    for ev_name, ev_def in events.items():
+        payload = ev_def.get("payload", {})
+        class_name = f"{ev_name}Payload"
+
+        lines.append(f"class {class_name}(BaseModel):")
+
+        if not payload:
+            lines.append("    pass")
+            lines.append("")
+            continue
+
+        for field, type_ in payload.items():
+            lines.append(f"    {field}: {py_type(type_)}")
+
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+# -----------------------------------------------------------
+# ProtocolEvent wrapper
+# -----------------------------------------------------------
+
+def gen_protocol_event() -> str:
+    return """from pydantic import BaseModel
+from typing import Optional
+
+
+class ProtocolEvent(BaseModel):
+    namespace: str
+    event: str
+    payload: dict
+    direction: str
+    phase: str
+
+    def model(self) -> Optional[BaseModel]:
+        \"\"\"Return the Pydantic model matching this event payload (if any).\"\"\"
+        from .registry import EVENT_MODELS
+        key = (self.namespace, self.event)
+        Model = EVENT_MODELS.get(key)
+        if Model:
+            return Model(**self.payload)
+        return None
+"""
+
+
+# -----------------------------------------------------------
+# Registry builder
+# -----------------------------------------------------------
+
+def gen_registry(namespaces: dict) -> str:
+    lines = [
+        "from typing import Dict, Tuple, Type",
+        "from pydantic import BaseModel",
+        "",
+    ]
+
+    # imports
+    for ns, ns_def in namespaces.items():
+        for ev in ns_def["events"].keys():
+            lines.append(f"from .models.{ns} import {ev}Payload")
+
+    lines.append("")
+    lines.append("EVENT_MODELS: Dict[Tuple[str, str], Type[BaseModel]] = {}")
+    lines.append("")
+
+    # registry entries
+    for ns, ns_def in namespaces.items():
+        for ev in ns_def["events"].keys():
+            lines.append(f"EVENT_MODELS[(\"{ns}\", \"{ev}\")] = {ev}Payload")
+
+    return "\n".join(lines)
+
+
+# -----------------------------------------------------------
+# Main
+# -----------------------------------------------------------
+
+def main():
+    print("📄 Loading protocol:", PROTO_PATH)
+
+    with open(PROTO_PATH, "r", encoding="utf-8") as f:
+        proto = json.load(f)
+
+    namespaces = proto["namespaces"]
+
+    # Prepare directories
+    ensure_dir(OUT_ROOT)
+    ensure_dir(OUT_ROOT / "enums")
+    ensure_dir(OUT_ROOT / "models")
+
+    (OUT_ROOT / "__init__.py").write_text("# mtv_protocol package\n")
+
+    # Generate files per namespace
+    for ns, ns_def in namespaces.items():
+        events = ns_def["events"]
+
+        enum_file = OUT_ROOT / "enums" / f"{ns}.py"
+        model_file = OUT_ROOT / "models" / f"{ns}.py"
+
+        enum_file.write_text(gen_enum(ns, events))
+        model_file.write_text(gen_models(ns, events))
+
+    # Write ProtocolEvent wrapper
+    (OUT_ROOT / "protocol_event.py").write_text(gen_protocol_event())
+
+    # Write central registry
+    (OUT_ROOT / "registry.py").write_text(gen_registry(namespaces))
+
+    print("🎉 Python protocol code generated at:", OUT_ROOT)
+
+
+if __name__ == "__main__":
+    main()
+
+
+📄 protocol/validate.py
+──────────────────────────────
+#!/usr/bin/env python3
+"""
+validate.py
+Validate protocol.json against protocol.schema.json using JSON Schema.
+This is the single source of truth validator for the MTV protocol.
+"""
+
+import json
+from pathlib import Path
+from jsonschema import validate, Draft202012Validator
+from jsonschema.exceptions import ValidationError
+
+ROOT = Path(__file__).resolve().parent
+PROTO = ROOT / "protocol.json"
+SCHEMA = ROOT / "protocol.schema.json"
+
+
+def load_json(path: Path):
+    with path.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def main():
+    print(f"📄 Loading schema: {SCHEMA}")
+    print(f"📄 Loading protocol: {PROTO}")
+
+    if not PROTO.exists():
+        print(f"❌ protocol.json not found at {PROTO}")
+        exit(1)
+
+    if not SCHEMA.exists():
+        print(f"❌ protocol.schema.json not found at {SCHEMA}")
+        exit(1)
+
+    schema = load_json(SCHEMA)
+    protocol = load_json(PROTO)
+
+    print("🔍 Validating...")
+
+    try:
+        validator = Draft202012Validator(schema)
+        validator.validate(protocol)
+    except ValidationError as e:
+        print("❌ Protocol validation failed")
+        print("----------------------------------------------------")
+        print("Message:", e.message)
+        print("Instance path:", list(e.absolute_path))
+        print("Schema path:", list(e.absolute_schema_path))
+        print("----------------------------------------------------")
+        exit(1)
+
+    print("✅ Protocol.json is VALID according to schema v2.0")
+
+
+if __name__ == "__main__":
+    main()
+

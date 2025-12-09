@@ -1,0 +1,657 @@
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/enums/edge.go
+──────────────────────────────
+package enums
+
+type EdgeEvent string
+
+const (
+    EDGE_EDGE_SESSION_ENDED EdgeEvent = "edge_session_ended"
+    EDGE_EDGE_RENDER_UPDATE EdgeEvent = "edge_render_update"
+    EDGE_EDGE_MIC_AUDIO_CHUNK EdgeEvent = "edge_mic_audio_chunk"
+    EDGE_EDGE_READY EdgeEvent = "edge_ready"
+    EDGE_EDGE_PAIR_CODE EdgeEvent = "edge_pair_code"
+    EDGE_EDGE_QR_CODE EdgeEvent = "edge_qr_code"
+    EDGE_EDGE_SESSION_STARTED EdgeEvent = "edge_session_started"
+)
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/enums/system.go
+──────────────────────────────
+package enums
+
+type SystemEvent string
+
+const (
+    SYSTEM_SYSTEM_ERROR SystemEvent = "system_error"
+    SYSTEM_SYSTEM_STATE_UPDATE SystemEvent = "system_state_update"
+    SYSTEM_SYSTEM_REQUEST_STATUS SystemEvent = "system_request_status"
+    SYSTEM_SYSTEM_RESPONSE_STATUS SystemEvent = "system_response_status"
+    SYSTEM_SYSTEM_SESSION_CLOSED SystemEvent = "system_session_closed"
+    SYSTEM_SYSTEM_HEARTBEAT SystemEvent = "system_heartbeat"
+)
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/enums/phone.go
+──────────────────────────────
+package enums
+
+type PhoneEvent string
+
+const (
+    PHONE_PHONE_PING PhoneEvent = "phone_ping"
+    PHONE_PHONE_JOIN_ROOM PhoneEvent = "phone_join_room"
+    PHONE_PHONE_JOIN_APPROVED PhoneEvent = "phone_join_approved"
+    PHONE_PHONE_ROLE_ASSIGNED PhoneEvent = "phone_role_assigned"
+    PHONE_PHONE_REQUEST_LEADER PhoneEvent = "phone_request_leader"
+    PHONE_PHONE_DISCONNECT PhoneEvent = "phone_disconnect"
+    PHONE_PHONE_JOIN_REJECTED PhoneEvent = "phone_join_rejected"
+    PHONE_PHONE_LEADER_TRANSFERRED PhoneEvent = "phone_leader_transferred"
+    PHONE_PHONE_SUBMIT_VOTE PhoneEvent = "phone_submit_vote"
+    PHONE_PHONE_SUBMIT_CHOICE PhoneEvent = "phone_submit_choice"
+    PHONE_PHONE_SINGER_READY PhoneEvent = "phone_singer_ready"
+)
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/enums/karaoke.go
+──────────────────────────────
+package enums
+
+type KaraokeEvent string
+
+const (
+    KARAOKE_KARAOKE_LYRIC_TIMELINE KaraokeEvent = "karaoke_lyric_timeline"
+    KARAOKE_KARAOKE_SCORING_UPDATE KaraokeEvent = "karaoke_scoring_update"
+    KARAOKE_KARAOKE_SONG_SELECTED KaraokeEvent = "karaoke_song_selected"
+    KARAOKE_KARAOKE_SONG_STARTED KaraokeEvent = "karaoke_song_started"
+    KARAOKE_KARAOKE_SONG_PAUSED KaraokeEvent = "karaoke_song_paused"
+    KARAOKE_KARAOKE_SONG_RESUMED KaraokeEvent = "karaoke_song_resumed"
+    KARAOKE_KARAOKE_SONG_COMPLETED KaraokeEvent = "karaoke_song_completed"
+    KARAOKE_KARAOKE_QUEUE_UPDATED KaraokeEvent = "karaoke_queue_updated"
+)
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/enums/bccc.go
+──────────────────────────────
+package enums
+
+type BcccEvent string
+
+const (
+    BCCC_BCCC_VOTE_CLOSED BcccEvent = "bccc_vote_closed"
+    BCCC_BCCC_VOTE_RESULTS BcccEvent = "bccc_vote_results"
+    BCCC_BCCC_PROMPT_SENT BcccEvent = "bccc_prompt_sent"
+    BCCC_BCCC_USER_RESPONSE BcccEvent = "bccc_user_response"
+    BCCC_BCCC_AI_JUDGEMENT BcccEvent = "bccc_ai_judgement"
+    BCCC_BCCC_CHALLENGE_STARTED BcccEvent = "bccc_challenge_started"
+    BCCC_BCCC_CHALLENGE_ENDED BcccEvent = "bccc_challenge_ended"
+    BCCC_BCCC_VOTE_OPENED BcccEvent = "bccc_vote_opened"
+)
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/models/edge.go
+──────────────────────────────
+package models
+
+type _ = any
+
+// edge_qr_code payload
+type EdgeQrCodePayload struct {
+    QrSvg string `json:"qr_svg"`
+}
+
+// edge_session_started payload
+type EdgeSessionStartedPayload struct {
+    SessionId string `json:"session_id"`
+}
+
+// edge_session_ended payload
+type EdgeSessionEndedPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// edge_render_update payload
+type EdgeRenderUpdatePayload struct {
+    Screen string `json:"screen"`
+    Payload map[string]any `json:"payload"`
+}
+
+// edge_mic_audio_chunk payload
+type EdgeMicAudioChunkPayload struct {
+    Base64Wav string `json:"base64_wav"`
+    SingerId string `json:"singer_id"`
+}
+
+// edge_ready payload
+type EdgeReadyPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// edge_pair_code payload
+type EdgePairCodePayload struct {
+    PairCode string `json:"pair_code"`
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/models/system.go
+──────────────────────────────
+package models
+
+type _ = any
+
+// system_response_status payload
+type SystemResponseStatusPayload struct {
+    Ok bool `json:"ok"`
+    Message string `json:"message"`
+}
+
+// system_session_closed payload
+type SystemSessionClosedPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// system_heartbeat payload
+type SystemHeartbeatPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// system_error payload
+type SystemErrorPayload struct {
+    Code string `json:"code"`
+    Message string `json:"message"`
+}
+
+// system_state_update payload
+type SystemStateUpdatePayload struct {
+    SessionId string `json:"session_id"`
+    Uptime float64 `json:"uptime"`
+    ActiveNamespace string `json:"active_namespace"`
+}
+
+// system_request_status payload
+type SystemRequestStatusPayload struct {
+    Empty bool `json:"empty"`
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/models/phone.go
+──────────────────────────────
+package models
+
+type _ = any
+
+// phone_role_assigned payload
+type PhoneRoleAssignedPayload struct {
+    UserId string `json:"user_id"`
+    Role string `json:"role"`
+}
+
+// phone_request_leader payload
+type PhoneRequestLeaderPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// phone_disconnect payload
+type PhoneDisconnectPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// phone_join_rejected payload
+type PhoneJoinRejectedPayload struct {
+    Reason string `json:"reason"`
+}
+
+// phone_leader_transferred payload
+type PhoneLeaderTransferredPayload struct {
+    FromUser string `json:"from_user"`
+    ToUser string `json:"to_user"`
+}
+
+// phone_submit_vote payload
+type PhoneSubmitVotePayload struct {
+    VoteId string `json:"vote_id"`
+    Value string `json:"value"`
+}
+
+// phone_submit_choice payload
+type PhoneSubmitChoicePayload struct {
+    Choice string `json:"choice"`
+}
+
+// phone_singer_ready payload
+type PhoneSingerReadyPayload struct {
+    UserId string `json:"user_id"`
+}
+
+// phone_ping payload
+type PhonePingPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// phone_join_room payload
+type PhoneJoinRoomPayload struct {
+    DeviceId string `json:"device_id"`
+    UserName string `json:"user_name"`
+    RoomCode string `json:"room_code"`
+}
+
+// phone_join_approved payload
+type PhoneJoinApprovedPayload struct {
+    UserId string `json:"user_id"`
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/models/karaoke.go
+──────────────────────────────
+package models
+
+type _ = any
+
+// karaoke_song_resumed payload
+type KaraokeSongResumedPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// karaoke_song_completed payload
+type KaraokeSongCompletedPayload struct {
+    SongId string `json:"song_id"`
+}
+
+// karaoke_queue_updated payload
+type KaraokeQueueUpdatedPayload struct {
+    Queue []map[string]any `json:"queue"`
+}
+
+// karaoke_lyric_timeline payload
+type KaraokeLyricTimelinePayload struct {
+    Timestamp float64 `json:"timestamp"`
+    Lyric string `json:"lyric"`
+}
+
+// karaoke_scoring_update payload
+type KaraokeScoringUpdatePayload struct {
+    PitchAccuracy float64 `json:"pitch_accuracy"`
+    TimingAccuracy float64 `json:"timing_accuracy"`
+    Section string `json:"section"`
+    Score float64 `json:"score"`
+}
+
+// karaoke_song_selected payload
+type KaraokeSongSelectedPayload struct {
+    SongId string `json:"song_id"`
+    Title string `json:"title"`
+    Artist string `json:"artist"`
+    Duration float64 `json:"duration"`
+}
+
+// karaoke_song_started payload
+type KaraokeSongStartedPayload struct {
+    SongId string `json:"song_id"`
+}
+
+// karaoke_song_paused payload
+type KaraokeSongPausedPayload struct {
+    Empty bool `json:"empty"`
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/models/bccc.go
+──────────────────────────────
+package models
+
+type _ = any
+
+// bccc_ai_judgement payload
+type BcccAiJudgementPayload struct {
+    PromptId string `json:"prompt_id"`
+    Score float64 `json:"score"`
+    Explanation string `json:"explanation"`
+}
+
+// bccc_challenge_started payload
+type BcccChallengeStartedPayload struct {
+    ChallengeId string `json:"challenge_id"`
+}
+
+// bccc_challenge_ended payload
+type BcccChallengeEndedPayload struct {
+    Empty bool `json:"empty"`
+}
+
+// bccc_vote_opened payload
+type BcccVoteOpenedPayload struct {
+    VoteId string `json:"vote_id"`
+}
+
+// bccc_vote_closed payload
+type BcccVoteClosedPayload struct {
+    VoteId string `json:"vote_id"`
+}
+
+// bccc_vote_results payload
+type BcccVoteResultsPayload struct {
+    VoteId string `json:"vote_id"`
+    Results map[string]any `json:"results"`
+}
+
+// bccc_prompt_sent payload
+type BcccPromptSentPayload struct {
+    PromptId string `json:"prompt_id"`
+    Text string `json:"text"`
+    Duration float64 `json:"duration"`
+}
+
+// bccc_user_response payload
+type BcccUserResponsePayload struct {
+    PromptId string `json:"prompt_id"`
+    UserId string `json:"user_id"`
+    ResponseText string `json:"response_text"`
+}
+
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/event/registry.go
+──────────────────────────────
+package event
+
+import "mtv_protocol/models"
+
+var EVENT_REGISTRY = map[string]func() any{
+    "system:system_session_closed": func() any { return &models.SystemSessionClosedPayload{} },
+    "system:system_heartbeat": func() any { return &models.SystemHeartbeatPayload{} },
+    "system:system_error": func() any { return &models.SystemErrorPayload{} },
+    "system:system_state_update": func() any { return &models.SystemStateUpdatePayload{} },
+    "system:system_request_status": func() any { return &models.SystemRequestStatusPayload{} },
+    "system:system_response_status": func() any { return &models.SystemResponseStatusPayload{} },
+    "edge:edge_qr_code": func() any { return &models.EdgeQrCodePayload{} },
+    "edge:edge_session_started": func() any { return &models.EdgeSessionStartedPayload{} },
+    "edge:edge_session_ended": func() any { return &models.EdgeSessionEndedPayload{} },
+    "edge:edge_render_update": func() any { return &models.EdgeRenderUpdatePayload{} },
+    "edge:edge_mic_audio_chunk": func() any { return &models.EdgeMicAudioChunkPayload{} },
+    "edge:edge_ready": func() any { return &models.EdgeReadyPayload{} },
+    "edge:edge_pair_code": func() any { return &models.EdgePairCodePayload{} },
+    "karaoke:karaoke_song_paused": func() any { return &models.KaraokeSongPausedPayload{} },
+    "karaoke:karaoke_song_resumed": func() any { return &models.KaraokeSongResumedPayload{} },
+    "karaoke:karaoke_song_completed": func() any { return &models.KaraokeSongCompletedPayload{} },
+    "karaoke:karaoke_queue_updated": func() any { return &models.KaraokeQueueUpdatedPayload{} },
+    "karaoke:karaoke_lyric_timeline": func() any { return &models.KaraokeLyricTimelinePayload{} },
+    "karaoke:karaoke_scoring_update": func() any { return &models.KaraokeScoringUpdatePayload{} },
+    "karaoke:karaoke_song_selected": func() any { return &models.KaraokeSongSelectedPayload{} },
+    "karaoke:karaoke_song_started": func() any { return &models.KaraokeSongStartedPayload{} },
+    "bccc:bccc_prompt_sent": func() any { return &models.BcccPromptSentPayload{} },
+    "bccc:bccc_user_response": func() any { return &models.BcccUserResponsePayload{} },
+    "bccc:bccc_ai_judgement": func() any { return &models.BcccAiJudgementPayload{} },
+    "bccc:bccc_challenge_started": func() any { return &models.BcccChallengeStartedPayload{} },
+    "bccc:bccc_challenge_ended": func() any { return &models.BcccChallengeEndedPayload{} },
+    "bccc:bccc_vote_opened": func() any { return &models.BcccVoteOpenedPayload{} },
+    "bccc:bccc_vote_closed": func() any { return &models.BcccVoteClosedPayload{} },
+    "bccc:bccc_vote_results": func() any { return &models.BcccVoteResultsPayload{} },
+    "phone:phone_join_room": func() any { return &models.PhoneJoinRoomPayload{} },
+    "phone:phone_join_approved": func() any { return &models.PhoneJoinApprovedPayload{} },
+    "phone:phone_role_assigned": func() any { return &models.PhoneRoleAssignedPayload{} },
+    "phone:phone_request_leader": func() any { return &models.PhoneRequestLeaderPayload{} },
+    "phone:phone_disconnect": func() any { return &models.PhoneDisconnectPayload{} },
+    "phone:phone_join_rejected": func() any { return &models.PhoneJoinRejectedPayload{} },
+    "phone:phone_leader_transferred": func() any { return &models.PhoneLeaderTransferredPayload{} },
+    "phone:phone_submit_vote": func() any { return &models.PhoneSubmitVotePayload{} },
+    "phone:phone_submit_choice": func() any { return &models.PhoneSubmitChoicePayload{} },
+    "phone:phone_singer_ready": func() any { return &models.PhoneSingerReadyPayload{} },
+    "phone:phone_ping": func() any { return &models.PhonePingPayload{} },
+}
+
+📄 /Users/anhnguyen/mtv/protocol/out/go/mtv_protocol/event/protocol_event.go
+──────────────────────────────
+package event
+
+import (
+	"encoding/json"
+)
+
+type ProtocolEvent struct {
+	Namespace string         `json:"namespace"`
+	Event     string         `json:"event"`
+	Payload   map[string]any `json:"payload"`
+	Direction string         `json:"direction"`
+	Phase     string         `json:"phase"`
+}
+
+// Model maps event → typed payload struct
+func (e *ProtocolEvent) Model() (any, error) {
+	key := e.Namespace + ":" + e.Event
+	ctor, ok := EVENT_REGISTRY[key]
+	if !ok {
+		return nil, nil
+	}
+	b, _ := json.Marshal(e.Payload)
+	m := ctor()
+	err := json.Unmarshal(b, m)
+	return m, err
+}
+
+📄 /Users/anhnguyen/mtv/protocol/codegen/generate_go.go
+──────────────────────────────
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+// ------------------------------------------------------------
+// Protocol structures (must match protocol v2.0)
+// ------------------------------------------------------------
+
+type Protocol struct {
+	Version    string                         `json:"version"`
+	Meta       map[string]any                 `json:"meta"`
+	Namespaces map[string]NamespaceDefinition `json:"namespaces"`
+}
+
+type NamespaceDefinition struct {
+	Description string                      `json:"description"`
+	Events      map[string]EventDefinition  `json:"events"`
+}
+
+type EventDefinition struct {
+	Description string            `json:"description"`
+	Direction   string            `json:"direction"`
+	Phase       string            `json:"phase"`
+	Payload     map[string]string `json:"payload"`
+}
+
+// ------------------------------------------------------------
+// Type mapping
+// ------------------------------------------------------------
+func goType(t string) string {
+	switch {
+	case t == "string":
+		return "string"
+	case t == "number":
+		return "float64"
+	case t == "boolean":
+		return "bool"
+	case t == "object":
+		return "map[string]any"
+	case strings.HasPrefix(t, "array<") && strings.HasSuffix(t, ">"):
+		inner := t[6 : len(t)-1]
+		return "[]" + goType(inner)
+	default:
+		return "any"
+	}
+}
+
+// ------------------------------------------------------------
+// Helpers
+// ------------------------------------------------------------
+func writeFile(path string, content string) {
+	os.MkdirAll(filepath.Dir(path), 0o755)
+	os.WriteFile(path, []byte(content), 0o644)
+}
+
+func pascal(s string) string {
+	parts := strings.Split(s, "_")
+	for i := range parts {
+		if len(parts[i]) > 0 {
+			parts[i] = strings.ToUpper(parts[i][:1]) + parts[i][1:]
+		}
+	}
+	return strings.Join(parts, "")
+}
+
+// ------------------------------------------------------------
+// Generate enums
+// ------------------------------------------------------------
+func genEnum(namespace string, events map[string]EventDefinition) string {
+	sb := strings.Builder{}
+
+	sb.WriteString("package enums\n\n")
+	sb.WriteString("type " + pascal(namespace) + "Event string\n\n")
+	sb.WriteString("const (\n")
+
+	for ev := range events {
+		sb.WriteString(fmt.Sprintf(
+			"    %s_%s %sEvent = \"%s\"\n",
+			strings.ToUpper(namespace),
+			strings.ToUpper(ev),
+			pascal(namespace),
+			ev,
+		))
+	}
+
+	sb.WriteString(")\n")
+	return sb.String()
+}
+
+// ------------------------------------------------------------
+// Generate payload models
+// ------------------------------------------------------------
+func genModels(namespace string, events map[string]EventDefinition) string {
+	sb := strings.Builder{}
+	sb.WriteString("package models\n\n")
+	sb.WriteString("type _ = any\n\n")
+
+	for ev, spec := range events {
+		sb.WriteString(fmt.Sprintf("// %s payload\n", ev))
+		sb.WriteString(fmt.Sprintf("type %sPayload struct {\n", pascal(ev)))
+
+		if len(spec.Payload) == 0 {
+			sb.WriteString("    Empty bool `json:\"empty\"`\n")
+		} else {
+			for field, t := range spec.Payload {
+				sb.WriteString(fmt.Sprintf(
+					"    %s %s `json:\"%s\"`\n",
+					pascal(field),
+					goType(t),
+					field,
+				))
+			}
+		}
+
+		sb.WriteString("}\n\n")
+	}
+
+	return sb.String()
+}
+
+// ------------------------------------------------------------
+// ProtocolEvent wrapper
+// ------------------------------------------------------------
+func genProtocolEvent() string {
+	return `package event
+
+import (
+	"encoding/json"
+)
+
+type ProtocolEvent struct {
+	Namespace string         ` + "`json:\"namespace\"`" + `
+	Event     string         ` + "`json:\"event\"`" + `
+	Payload   map[string]any ` + "`json:\"payload\"`" + `
+	Direction string         ` + "`json:\"direction\"`" + `
+	Phase     string         ` + "`json:\"phase\"`" + `
+}
+
+// Model maps event → typed payload struct
+func (e *ProtocolEvent) Model() (any, error) {
+	key := e.Namespace + ":" + e.Event
+	ctor, ok := EVENT_REGISTRY[key]
+	if !ok {
+		return nil, nil
+	}
+	b, _ := json.Marshal(e.Payload)
+	m := ctor()
+	err := json.Unmarshal(b, m)
+	return m, err
+}
+`
+}
+
+// ------------------------------------------------------------
+// Registry
+// ------------------------------------------------------------
+func genRegistry(protocol Protocol) string {
+	sb := strings.Builder{}
+	sb.WriteString("package event\n\n")
+	sb.WriteString("import \"mtv_protocol/models\"\n\n")
+
+	sb.WriteString("var EVENT_REGISTRY = map[string]func() any{\n")
+
+	for ns, nsdef := range protocol.Namespaces {
+		for ev := range nsdef.Events {
+			key := ns + ":" + ev
+			sb.WriteString(fmt.Sprintf(
+				"    \"%s\": func() any { return &models.%sPayload{} },\n",
+				key,
+				pascal(ev),
+			))
+		}
+	}
+
+	sb.WriteString("}\n")
+	return sb.String()
+}
+
+// ------------------------------------------------------------
+// Main
+// ------------------------------------------------------------
+func main() {
+	// Find repo root
+	cwd, _ := os.Getwd()
+	repo := cwd
+	for {
+		if _, err := os.Stat(filepath.Join(repo, "protocol.json")); err == nil {
+			break
+		}
+		if repo == "/" {
+			fmt.Println("❌ Could not locate protocol.json")
+			return
+		}
+		repo = filepath.Dir(repo)
+	}
+
+	path := filepath.Join(repo, "protocol.json")
+	fmt.Println("📄 Using protocol:", path)
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+
+	var protocol Protocol
+	if err := json.Unmarshal(data, &protocol); err != nil {
+		panic(err)
+	}
+
+	out := filepath.Join(repo, "out", "go", "mtv_protocol")
+	os.MkdirAll(out, 0o755)
+
+	// Generate per-namespace
+	for ns, nsdef := range protocol.Namespaces {
+		writeFile(filepath.Join(out, "enums", ns+".go"), genEnum(ns, nsdef.Events))
+		writeFile(filepath.Join(out, "models", ns+".go"), genModels(ns, nsdef.Events))
+	}
+
+	// Runtime layer
+	writeFile(filepath.Join(out, "event", "protocol_event.go"), genProtocolEvent())
+	writeFile(filepath.Join(out, "event", "registry.go"), genRegistry(protocol))
+
+	fmt.Println("🎉 Go code generated at:", out)
+}
+

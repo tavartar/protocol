@@ -1,0 +1,422 @@
+{
+  "version": "2.0.0",
+  "meta": {
+    "notes": "Unified protocol for Games, Karaoke, BCCC, Edge, Phone participation"
+  },
+  "namespaces": {
+    "system": {
+      "description": "System-level events for health, errors, session state",
+      "events": {
+        "system_group_registered": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "description": "Fired when a new group is successfully registered; sent to participants to update their group view.",
+          "payload": {
+            "group_id": "string",
+            "group_name": "string"
+          }
+        },
+        "system_phase_changed": {
+          "direction": "server→client",
+          "phase": "system",
+          "description": "Signals a phase transition for the current session (e.g., pre → in → post); used for syncing FE views.",
+          "payload": {
+            "session_id": "string",
+            "phase": "string"
+          }
+        },
+        "system_heartbeat": {
+          "direction": "edge→server",
+          "phase": "system",
+          "payload": {}
+        },
+        "system_error": {
+          "direction": "edge→server",
+          "phase": "system",
+          "payload": {
+            "message": "string",
+            "code": "string"
+          }
+        },
+        "system_state_update": {
+          "direction": "server→client",
+          "phase": "system",
+          "payload": {
+            "uptime": "number",
+            "active_namespace": "string",
+            "session_id": "string"
+          }
+        },
+        "system_request_status": {
+          "direction": "client→server",
+          "phase": "system",
+          "payload": {}
+        },
+        "system_response_status": {
+          "direction": "server→client",
+          "phase": "system",
+          "payload": {
+            "ok": "boolean",
+            "message": "string"
+          }
+        },
+        "system_session_closed": {
+          "direction": "server→client",
+          "phase": "post_session",
+          "payload": {}
+        },
+        "system_outro_message": {
+          "description": "Final thank-you or wrap-up message at session end.",
+          "direction": "server→client",
+          "phase": "post",
+          "payload": {
+            "message": "string"
+          }
+        }
+      }
+    },
+    "edge": {
+      "description": "Raspberry Pi or Laptop-based media/graphics device",
+      "events": {
+        "edge_ready": {
+          "direction": "edge→server",
+          "phase": "system",
+          "payload": {}
+        },
+        "edge_pair_code": {
+          "direction": "server→edge",
+          "phase": "pre_session",
+          "payload": {
+            "pair_code": "string"
+          }
+        },
+        "edge_qr_code": {
+          "direction": "server→edge",
+          "phase": "pre_session",
+          "payload": {
+            "qr_svg": "string"
+          }
+        },
+        "edge_session_started": {
+          "direction": "server→edge",
+          "phase": "in_session",
+          "payload": {
+            "session_id": "string"
+          }
+        },
+        "edge_session_ended": {
+          "direction": "server→edge",
+          "phase": "post_session",
+          "payload": {}
+        },
+        "edge_render_update": {
+          "direction": "server→edge",
+          "phase": "in_session",
+          "payload": {
+            "screen": "string",
+            "payload": "object"
+          }
+        },
+        "edge_mic_audio_chunk": {
+          "direction": "edge→server",
+          "phase": "in_session",
+          "payload": {
+            "singer_id": "string",
+            "base64_wav": "string"
+          }
+        }
+      }
+    },
+    "karaoke": {
+      "description": "Karaoke queue, lyrics, scoring",
+      "events": {
+        "karaoke_song_registered": {
+          "direction": "client→server",
+          "phase": "pre_session",
+          "description": "Sent when a user registers a song before the karaoke session begins. Includes optional YouTube ID and performance details.",
+          "payload": {
+            "user_id": "string",
+            "member_name": "string",
+            "song_title": "string",
+            "youtube_id": "string",
+            "tone": "string",
+            "producer": "string"
+          }
+        },
+        "karaoke_song_registration_accepted": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "description": "Confirmation from the server that a song was registered successfully, including its queue position.",
+          "payload": {
+            "song_id": "string",
+            "member_name": "string",
+            "song_title": "string",
+            "queue_position": "number"
+          }
+        },
+        "karaoke_song_selected": {
+          "direction": "client→server",
+          "phase": "pre_session",
+          "payload": {
+            "song_id": "string",
+            "title": "string",
+            "artist": "string",
+            "duration": "number"
+          }
+        },
+        "karaoke_song_started": {
+          "direction": "server→edge",
+          "phase": "in_session",
+          "payload": {
+            "song_id": "string"
+          }
+        },
+        "karaoke_song_paused": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {}
+        },
+        "karaoke_song_resumed": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {}
+        },
+        "karaoke_song_completed": {
+          "direction": "edge→server",
+          "phase": "post_session",
+          "payload": {
+            "song_id": "string"
+          }
+        },
+        "karaoke_queue_updated": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "payload": {
+            "queue": "array<object>"
+          }
+        },
+        "karaoke_lyric_timeline": {
+          "direction": "server→edge",
+          "phase": "in_session",
+          "payload": {
+            "timestamp": "number",
+            "lyric": "string"
+          }
+        },
+        "karaoke_scoring_update": {
+          "direction": "server→client",
+          "phase": "post_session",
+          "payload": {
+            "score": "number",
+            "pitch_accuracy": "number",
+            "timing_accuracy": "number",
+            "section": "string"
+          }
+        },
+        "karaoke_performance_scored": {
+          "description": "Scores and feedback for a karaoke performance.",
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "user_id": "string",
+            "song_id": "string",
+            "score": "number",
+            "comments": "string"
+          }
+        }
+      }
+    },
+    "bccc": {
+      "description": "BCCC competitive challenge events",
+      "events": {
+        "bccc_session_setup": {
+          "direction": "client→server",
+          "phase": "pre_session",
+          "description": "Initiates a B\u1ea7u Cua game setup from the host with session settings like min/max bet, currency, and rounds.",
+          "payload": {
+            "session_name": "string",
+            "min_bet": "number",
+            "max_bet": "number",
+            "rounds": "number",
+            "currency": "string"
+          }
+        },
+        "bccc_session_configured": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "description": "Sent to all players when the B\u1ea7u Cua game is successfully configured by the host.",
+          "payload": {
+            "session_name": "string",
+            "min_bet": "number",
+            "max_bet": "number",
+            "rounds": "number",
+            "currency": "string",
+            "host_id": "string"
+          }
+        },
+        "bccc_challenge_started": {
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "challenge_id": "string"
+          }
+        },
+        "bccc_challenge_ended": {
+          "direction": "server→client",
+          "phase": "post_session",
+          "payload": {}
+        },
+        "bccc_vote_opened": {
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "vote_id": "string"
+          }
+        },
+        "bccc_vote_closed": {
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "vote_id": "string"
+          }
+        },
+        "bccc_vote_results": {
+          "direction": "server→client",
+          "phase": "post_session",
+          "payload": {
+            "vote_id": "string",
+            "results": "object"
+          }
+        },
+        "bccc_prompt_sent": {
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "prompt_id": "string",
+            "text": "string",
+            "duration": "number"
+          }
+        },
+        "bccc_user_response": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {
+            "prompt_id": "string",
+            "user_id": "string",
+            "response_text": "string"
+          }
+        },
+        "bccc_ai_judgement": {
+          "direction": "server→client",
+          "phase": "post_session",
+          "payload": {
+            "prompt_id": "string",
+            "score": "number",
+            "explanation": "string"
+          }
+        },
+        "bccc_round_result": {
+          "description": "Results of a BCCC round including payouts.",
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "round_number": "number",
+            "symbol_results": "array<string>",
+            "payouts": "array<object>"
+          }
+        }
+      }
+    },
+    "phone": {
+      "description": "Phone-based participation (leader, participant roles)",
+      "events": {
+        "phone_user_registered": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "description": "Acknowledges a user's registration in the system and associates them with a group.",
+          "payload": {
+            "user_id": "string",
+            "user_name": "string",
+            "group_id": "string"
+          }
+        },
+        "phone_join_room": {
+          "direction": "client→server",
+          "phase": "pre_session",
+          "payload": {
+            "room_code": "string",
+            "device_id": "string",
+            "user_name": "string"
+          }
+        },
+        "phone_join_approved": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "payload": {
+            "user_id": "string"
+          }
+        },
+        "phone_join_rejected": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "payload": {
+            "reason": "string"
+          }
+        },
+        "phone_role_assigned": {
+          "direction": "server→client",
+          "phase": "pre_session",
+          "payload": {
+            "user_id": "string",
+            "role": "string"
+          }
+        },
+        "phone_request_leader": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {}
+        },
+        "phone_leader_transferred": {
+          "direction": "server→client",
+          "phase": "in_session",
+          "payload": {
+            "from_user": "string",
+            "to_user": "string"
+          }
+        },
+        "phone_submit_vote": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {
+            "vote_id": "string",
+            "value": "string"
+          }
+        },
+        "phone_submit_choice": {
+          "direction": "client→server",
+          "phase": "in_session",
+          "payload": {
+            "choice": "string"
+          }
+        },
+        "phone_singer_ready": {
+          "direction": "client→server",
+          "phase": "pre_session",
+          "payload": {
+            "user_id": "string"
+          }
+        },
+        "phone_ping": {
+          "direction": "client→server",
+          "phase": "system",
+          "payload": {}
+        },
+        "phone_disconnect": {
+          "direction": "client→server",
+          "phase": "system",
+          "payload": {}
+        }
+      }
+    }
+  }
+}
