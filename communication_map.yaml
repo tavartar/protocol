@@ -1,0 +1,32 @@
+version: "1.0"
+meta:
+  description: "High-level LangStar system communication map"
+  owner: "langstar"
+  updated: "2026-01-08"
+
+participants:
+  frontend:
+    type: client
+    dialect: protocol
+  backend:
+    type: server
+    dialect: protocol
+  edge:
+    type: device
+    dialect: protocol
+
+channels:
+  - from: frontend
+    to: backend
+    transport: websocket
+    direction: client→server
+
+  - from: backend
+    to: frontend
+    transport: websocket
+    direction: server→client
+
+  - from: edge
+    to: backend
+    transport: zeromq
+    direction: device→server

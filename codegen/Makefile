@@ -1,5 +1,4 @@
-# Makefile for protocol code generation
-# Place this in /Users/anhnguyen/mtv/protocol/codegen
+# ~/mtv/protocol/codegen/Makefile
 
 SWIFT_GEN=generate_swift.swift
 PY_GEN=generate_py.py
@@ -8,7 +7,9 @@ TS_GEN=generate_ts.js
 TS_GEN_V1=generate_ts.js.v1.0
 KOTLIN_GEN=generate_kotlin.main.kts
 
-all: swift python js ts kotlin
+.PHONY: all swift python js ts ts_v1 kotlin rust clean
+
+all: swift python js ts kotlin rust
 
 swift:
 	@echo "▶️  Generating Swift..."
@@ -38,9 +39,21 @@ rust:
 	@echo "🦀 Building Rust codegen..."
 	@cd rust_codegen && cargo build --release
 
+go:
+	@echo "🐹 Generating Go code..."
+	@if [ -f generate_go.go ]; then go run generate_go.go $(PROTOCOL_JSON) $(OUT_DIR)/go; else echo "⚠️  Skipping Go: generate_go.go not found."; fi
+
+
 clean:
 	@echo "🧹 Cleaning Rust build..."
 	@cd rust_codegen && cargo clean
 
-.PHONY: all swift python js ts ts_v1 kotlin rust clean
+port:
+	mkdir -p ~/mtv/karaoke-app/protocol/
+	cp -r ../out/python  ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
+	cp -r ../out/swift   ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
+	cp -r ../out/kotlin  ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
+	cp -r ../out/ts      ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
+	cp -r ../out/go      ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
+	cp -r ../out/rust    ~/mtv/karaoke-app/protocol/ 2>/dev/null || true
 

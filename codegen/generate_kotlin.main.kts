@@ -1,156 +1,78 @@
 #!/usr/bin/env kotlin
-@file:DependsOn("org.json:json:20210307")
-
-/**
- * generate_kotlin.main.kts
- * Kotlin code generator for MTV protocol v2.0
- *
- * Reads protocol/protocol.json (v2.0 schema):
- * {
- *   "version": "2.0.0",
- *   "meta": {...},
- *   "namespaces": {
- *       "<namespace>": {
- *            "description": "...",
- *            "events": {
- *                "<event>": {
- *                     "description": "...",
- *                     "direction": "client→server",
- *                     "phase": "...",
- *                     "payload": { field: type }
- *                }
- *            }
- *       }
- *   }
- * }
- *
- * Generates:
- *   out/kotlin/enums/*.kt
- *   out/kotlin/models/*.kt
- */
+@file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.+")
 
 import java.io.File
-import org.json.JSONObject
-import org.json.JSONArray
+import kotlin.io.path.Path
+import kotlin.io.path.createDirectories
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 
-// ------------------------------------------------------------
-// Utilities
-// ------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Args
+// ---------------------------------------------------------------------------
 
-fun readJson(path: String): JSONObject =
-    JSONObject(File(path).readText(Charsets.UTF_8))
-
-fun ensureDir(f: File) {
-    if (!f.exists()) f.mkdirs()
+if (args.size != 2) {
+    System.err.println("Usage: generate_kotlin.main.kts <protocol.json> <out_dir>")
+    kotlin.system.exitProcess(1)
 }
 
-fun kotlinType(t: String): String = when {
-    t == "string" -> "String"
-    t == "number" -> "Double"
-    t == "boolean" -> "Boolean"
-    t == "object" -> "Map<String, Any>"
-    t.startsWith("array<") && t.endsWith(">") -> {
-        val inner = t.removePrefix("array<").removeSuffix(">")
-        "List<${kotlinType(inner)}>"
-    }
-    else -> "Any"
-}
+val protocolPath = args[0]
+val outDir = args[1]
 
-// ------------------------------------------------------------
-// Enum generator
-// ------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Load protocol
+// ---------------------------------------------------------------------------
 
-fun genEnum(namespace: String, events: JSONObject): String {
-    val className = namespace.replaceFirstChar { it.uppercase() } + "Event"
+val mapper = jacksonObjectMapper()
+val protocolFile = File(protocolPath)
 
-    val items = events.keys().asSequence().toList()
-    val enumLines = items.joinToString(",\n    ") { it.uppercase() }
-
-    return """
-        |// AUTO-GENERATED – DO NOT EDIT
-        |package mtv_protocol.enums
-        |
-        |enum class $className {
-        |    $enumLines
-        |}
-    """.trimMargin()
-}
-
-// ------------------------------------------------------------
-// Models generator
-// ------------------------------------------------------------
-
-fun genModels(namespace: String, events: JSONObject): String {
-    val classHeader = "// AUTO-GENERATED – DO NOT EDIT\npackage mtv_protocol.models\n"
-
-    val blocks = mutableListOf<String>()
-    val nsHeader = "import mtv_protocol.enums.*\n"
-
-    events.keys().forEach { eventName ->
-        val ev = events.getJSONObject(eventName)
-        val payload = ev.getJSONObject("payload")
-
-        val className = "${eventName}Payload"
-        val fields = payload.keys().asSequence().toList()
-
-        val fieldLines = if (fields.isEmpty()) {
-            "    // no payload fields\n"
-        } else {
-            fields.joinToString("\n") { key ->
-                val type = kotlinType(payload.getString(key))
-                "    val $key: $type"
-            }
-        }
-
-        blocks += """
-            |data class $className(
-            |$fieldLines
-            |)
-        """.trimMargin()
-    }
-
-    return classHeader + "\n" + nsHeader + "\n" + blocks.joinToString("\n\n")
-}
-
-// ------------------------------------------------------------
-// Main
-// ------------------------------------------------------------
-
-val repoRoot = File("").absoluteFile.parentFile.parentFile
-println("📁 Repo root = $repoRoot")
-
-val protocolFile = File(repoRoot, "protocol/protocol.json")
 if (!protocolFile.exists()) {
-    throw IllegalStateException("❌ protocol.json not found at: $protocolFile")
+    System.err.println("❌ Protocol file not found: $protocolPath")
+    kotlin.system.exitProcess(1)
 }
 
-val protocol = readJson(protocolFile.path)
-val namespaces = protocol.getJSONObject("namespaces")
+println("[codegen-kotlin] reading protocol: ${protocolFile.absolutePath}")
 
-val outRoot = File(repoRoot, "protocol/out/kotlin")
-val enumDir = File(outRoot, "enums")
-val modelDir = File(outRoot, "models")
+val protocol: Map<String, Any> = mapper.readValue(protocolFile)
 
-ensureDir(enumDir)
-ensureDir(modelDir)
+// ---------------------------------------------------------------------------
+// Prepare output directory
+// ---------------------------------------------------------------------------
 
-println("🛠 Output dir = $outRoot")
-println("🚀 Generating enums + models per namespace...")
+val outPath = Path(outDir)
+outPath.createDirectories()
 
-namespaces.keys().forEach { ns ->
-    val nsObj = namespaces.getJSONObject(ns)
-    val events = nsObj.getJSONObject("events")
+// ---------------------------------------------------------------------------
+// Generate Kotlin code (simple v1)
+// ---------------------------------------------------------------------------
 
-    // enum
-    val enumFile = File(enumDir, "${ns.replaceFirstChar { it.uppercase() }}Events.kt")
-    enumFile.writeText(genEnum(ns, events))
+val builder = StringBuilder()
+builder.appendLine("// ------------------------------------------------------------------")
+builder.appendLine("// Auto-generated Kotlin protocol (v${protocol["version"] ?: "unknown"})")
+builder.appendLine("// ------------------------------------------------------------------")
+builder.appendLine()
+builder.appendLine("package mtv.protocol")
+builder.appendLine()
 
-    // models
-    val modelFile = File(modelDir, "${ns.replaceFirstChar { it.uppercase() }}Models.kt")
-    modelFile.writeText(genModels(ns, events))
+val namespaces = protocol["namespaces"] as? Map<*, *> ?: emptyMap<Any, Any>()
 
-    println("   ✔ $ns (${events.length()} events)")
+for ((nsName, nsVal) in namespaces) {
+    val ns = nsName.toString()
+    val events = (nsVal as Map<*, *>)["events"] as? Map<*, *> ?: continue
+
+    builder.appendLine("// Namespace: $ns")
+    for ((evName, _) in events) {
+        builder.appendLine("const val ${ns.uppercase()}_${evName.toString().uppercase()} = \"$evName\"")
+    }
+    builder.appendLine()
 }
 
-println("\n🎉 Kotlin codegen complete.")
+// ---------------------------------------------------------------------------
+// Write file
+// ---------------------------------------------------------------------------
+
+val outFile = outPath.resolve("mtv_protocol.kt").toFile()
+outFile.writeText(builder.toString())
+
+println("[done] Kotlin code generated at: ${outFile.absolutePath}")
 

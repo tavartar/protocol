@@ -1,84 +1,71 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "MTV Protocol Schema v2.0",
-  "description": "Canonical definition of MTV cross-device event protocol",
+  "title": "Protocol Definition Schema",
   "type": "object",
-
   "required": ["version", "namespaces"],
-  "additionalProperties": false,
-
   "properties": {
     "version": {
-      "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+      "type": "string"
     },
-
     "meta": {
-      "description": "Optional protocol metadata such as notes or authors",
+      "type": "object",
       "additionalProperties": true
     },
-
     "namespaces": {
-      "description": "Root definition of all event namespaces",
       "type": "object",
-      "minProperties": 1,
-
       "additionalProperties": {
         "type": "object",
         "required": ["events"],
-        "additionalProperties": false,
-
         "properties": {
-          "description": { "type": "string" },
-
+          "description": {
+            "type": "string"
+          },
           "events": {
             "type": "object",
-            "minProperties": 1,
-
             "additionalProperties": {
               "type": "object",
               "required": ["direction", "payload"],
-              "additionalProperties": false,
-
               "properties": {
-                "description": { "type": "string" },
-
                 "direction": {
                   "type": "string",
                   "enum": [
-                    "client→server",
+                    "client→gateway",
+                    "gateway→client",
+                    "client→backend",
+                    "backend→client",
+                    "server→gateway",
+                    "gateway→server",
                     "server→client",
-                    "edge→server",
-                    "server→edge",
-                    "client↔edge"
+                    "client→server"
                   ]
                 },
-
                 "phase": {
-                  "type": "string",
-                  "enum": [
-                    "pre_session",
-                    "in_session",
-                    "post_session",
-                    "system"
-                  ]
+                  "type": "string"
                 },
-
                 "payload": {
                   "type": "object",
-                  "description": "Payload definition: key → type",
                   "additionalProperties": {
-                    "type": "string",
-                    "description": "A payload field type from allowed scalar/array/Object forms",
-                    "pattern": "^(string|number|boolean|object|array<.*>)$"
+                    "anyOf": [
+                      { "type": "string" },
+                      { "type": "number" },
+                      { "type": "boolean" },
+                      { "type": "object" },
+                      { "type": "array" }
+                    ]
                   }
+                },
+                "description": {
+                  "type": "string"
                 }
-              }
+              },
+              "additionalProperties": false
             }
           }
-        }
+        },
+        "additionalProperties": false
       }
     }
-  }
+  },
+  "additionalProperties": false
 }
 

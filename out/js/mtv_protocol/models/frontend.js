@@ -1,4 +1,4 @@
-// Models for namespace: edge
+// Models for namespace: frontend
 
 export function __placeholder__Payload() {
   return {

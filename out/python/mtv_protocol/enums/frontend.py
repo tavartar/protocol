@@ -1,4 +1,4 @@
 from enum import Enum
 
-class EdgeEvent(str, Enum):
+class FrontendEvent(str, Enum):
     __placeholder__ = "__placeholder__"

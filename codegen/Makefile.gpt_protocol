@@ -1,0 +1,41 @@
+# Makefile for language-specific protocol code generation with existence checks
+
+PYTHON         := python3
+PROTOCOL_JSON  := ../protocol.json
+OUT_DIR        := ../out
+APP_PROTOCOL   := ~/mtv/karaoke-app/protocol/
+
+.PHONY: python swift kotlin ts rust port clean
+
+python:
+	$(PYTHON) generate_py.py $(PROTOCOL_JSON) $(OUT_DIR)/python
+
+swift:
+	@echo "🌀 Generating Swift protocol code..."
+	@if [ -f generate_swift ]; then ./generate_swift $(PROTOCOL_JSON) $(OUT_DIR)/swift; else echo "⚠️  Skipping Swift: generate_swift not found."; fi
+
+kotlin:
+	@echo "🌀 Generating Kotlin protocol code..."
+	@if [ -f generate_kotlin ]; then ./generate_kotlin $(PROTOCOL_JSON) $(OUT_DIR)/kotlin; else echo "⚠️  Skipping Kotlin: generate_kotlin not found."; fi
+
+ts:
+	@echo "🌀 Generating TypeScript protocol code..."
+	@if [ -f generate_ts ]; then ./generate_ts $(PROTOCOL_JSON) $(OUT_DIR)/ts; else echo "⚠️  Skipping TypeScript: generate_ts not found."; fi
+
+rust:
+	@echo "🌀 Generating Rust protocol code..."
+	@if [ -f generate_rust ]; then ./generate_rust $(PROTOCOL_JSON) $(OUT_DIR)/rust; else echo "⚠️  Skipping Rust: generate_rust not found."; fi
+
+port:
+	@echo "🚚 Porting generated models to karaoke-app..."
+	mkdir -p $(APP_PROTOCOL)
+	cp -r $(OUT_DIR)/python  $(APP_PROTOCOL) 2>/dev/null || true
+	cp -r $(OUT_DIR)/swift   $(APP_PROTOCOL) 2>/dev/null || true
+	cp -r $(OUT_DIR)/kotlin  $(APP_PROTOCOL) 2>/dev/null || true
+	cp -r $(OUT_DIR)/ts      $(APP_PROTOCOL) 2>/dev/null || true
+	cp -r $(OUT_DIR)/rust    $(APP_PROTOCOL) 2>/dev/null || true
+
+clean:
+	@echo "🧼 Cleaning output directory..."
+	rm -rf $(OUT_DIR)/*
+

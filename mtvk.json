@@ -1,0 +1,31 @@
+{
+  "mtvk": {
+    "agent_spawned": {
+      "direction": "kernel\u2192agent",
+      "phase": "meta",
+      "payload": {
+        "agent_id": "string",
+        "role": "string",
+        "goal": "string"
+      }
+    },
+    "agent_result": {
+      "direction": "agent\u2192kernel",
+      "phase": "active",
+      "payload": {
+        "agent_id": "string",
+        "output": "string",
+        "status": "string"
+      }
+    },
+    "template_update": {
+      "direction": "any\u2192any",
+      "phase": "maintenance",
+      "payload": {
+        "template_id": "string",
+        "version": "string",
+        "diff": "string"
+      }
+    }
+  }
+}
